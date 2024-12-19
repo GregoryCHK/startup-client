@@ -20,7 +20,7 @@ const UserButton = () => {
 
             {/* DropDown Menu */}
             <div className="absoute border-2 border-black right-0 mt-2 w-36">
-                Hello World
+                Next Session
             </div>
         </div>
     )
