@@ -18,7 +18,7 @@ const menuitmes: MenuItem[] = [
 
 function NavBar() {
   return (
-    <nav className='bg-white shadow-sm font-sans'>
+    <nav className='bg-white shadow-sm'>
         <div className='mx-auto px-4'>
             <div className="flex justify-between items-center h-14">
                 <Link href='/' className='text-2xl font-semibold text-main'>
