@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import React from 'react'
 import {Calendar, CheckSquare} from 'lucide-react'
 
 import UserButton from "@/components/NavBar/UserButton";

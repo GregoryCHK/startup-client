@@ -5,7 +5,6 @@ import "./globals.css";
 import NavBar from "@/components/NavBar/Navbar";
 
 // Set up Roboto font
-
 const roboto = Roboto({
   weight: ['400', '700'],
   subsets: ['latin'],
@@ -24,9 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={roboto.className}
-      >
+      <body className={roboto.className}>
         <NavBar />
         {children}
       </body>
