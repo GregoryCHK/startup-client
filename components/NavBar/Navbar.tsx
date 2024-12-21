@@ -38,7 +38,7 @@ function NavBar() {
                     <Link href='/calendar' className='hover:text-main transition-colors duration-200'>
                         <Calendar className="h-4 w-4" />
                     </Link>
-                    <UserButton/>
+                    <UserButton firstName='Stella' lastName='Politaki'/>
                 </div>
             </div>
         </div>

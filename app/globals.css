@@ -7,3 +7,9 @@
         @apply h-full px-4 rounded-sm flex items-center text-sm font-normal text-gray-700 transition-all duration-300 ease-in-out hover:bg-gray-50 hover:text-main active:bg-gray-200;
     }
 }
+
+@layer components{
+    .breadcrumbs{
+        @apply text-secondary text-xs hover:underline;
+    }
+}

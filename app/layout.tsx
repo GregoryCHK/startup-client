@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 
-import NavBar from "@/components/NavBar/Navbar";
+import NavBar from "@/components/NavBar/NavBar";
+import BreadCrumbs from "@/components/BreadCrumbs";
 
 // Set up Roboto font
 const roboto = Roboto({
@@ -25,6 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={roboto.className}>
         <NavBar />
+        <BreadCrumbs/>
         {children}
       </body>
     </html>
