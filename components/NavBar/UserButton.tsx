@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {User, Settings, LogOut} from 'lucide-react';
 import Link from "next/link";
 
@@ -11,23 +11,42 @@ type UserButtonProps = {
 
 const UserButton = ({firstName, lastName}: UserButtonProps) => {
     const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+    const buttonRef = useRef<HTMLButtonElement>(null);
 
     const toggleDropDownMenu = () => {
         setIsOpen((prev) => !prev);
     };
-    
+
+    // Close the dropdown if clicking outside of it
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                dropdownRef.current && !dropdownRef.current.contains(event.target as Node) &&
+                buttonRef.current && !buttonRef.current.contains(event.target as Node)
+            ) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     return (
         <div className="relative">
             <button 
             onClick={toggleDropDownMenu}
+            ref={buttonRef}
             className="flex items-center p-[6px] text-main border-[1px] border-gray-200 rounded-full">
                 <User className="h-5 w-5"/>
             </button>
 
             {/* DropDown Menu */}
             {isOpen && (
-                <section className="z-10 absolute w-40 right-0 mt-2 bg-white rounded-md shadow-lg py-1 ">
+                <section ref={dropdownRef} className="z-10 absolute w-40 right-0 mt-2 bg-white rounded-md shadow-lg py-1 ">
                     <div className="flex items-center space-x-2 py-4 px-4 text-sm text-gray-700">
                         <User className="h-4 w-4"/>
                         <p>{`${firstName} ${lastName}`}</p>
