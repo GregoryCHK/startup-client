@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import {User, Settings, LogOut} from 'lucide-react';
 import Link from "next/link";
+import UserAvatar from "./UserAvatar";
 
 type UserButtonProps = {
     firstName: string;
@@ -40,32 +41,33 @@ const UserButton = ({firstName, lastName}: UserButtonProps) => {
             <button 
             onClick={toggleDropDownMenu}
             ref={buttonRef}
-            className="flex items-center p-[6px] text-main border-[1px] border-gray-200 rounded-full">
-                <User className="h-5 w-5"/>
+            className="flex items-center p-[6px] text-custom ">
+                <UserAvatar src="https://i.pravatar.cc///300" alt={`${firstName.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}`}/>
             </button>
 
             {/* DropDown Menu */}
             {isOpen && (
                 <section ref={dropdownRef} className="z-10 absolute w-40 right-0 mt-2 bg-white rounded-md shadow-lg py-1 ">
                     <div className="flex items-center space-x-2 py-4 px-4 text-sm text-gray-700">
-                        <User className="h-4 w-4"/>
+                        {/* <User className="h-4 w-4"/> */}
+                        <UserAvatar src="https://i.pravatar.cc///300" alt={`${firstName.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}`}/>
                         <p>{`${firstName} ${lastName}`}</p>
                     </div>
                     <hr />
-                    <Link href="/userprofile" className="block px-4 py-2 text-sm text-gray-700 hover:text-main">
+                    <Link href="/userprofile" className="block px-4 py-2 text-sm text-gray-700 hover:text-custom">
                         <div className="flex items-center space-x-2">
                             <User className="h-4 w-4"/>
                             <span>Profile</span>
                         </div>
                     </Link>
-                    <Link href="/settings" className="block px-4 py-2 text-sm text-gray-700 hover:text-main">
+                    <Link href="/settings" className="block px-4 py-2 text-sm text-gray-700 hover:text-custom">
                         <div className="flex items-center space-x-2">
                             <Settings className="h-4 w-4"/>
                             <span>Settings</span>
                         </div>
                     </Link>
                     <hr />
-                    <button onClick={() => console.log('LogOut')} className="block px-4 py-2 text-sm text-gray-700 hover:text-main">
+                    <button onClick={() => console.log('LogOut')} className="block px-4 py-2 text-sm text-gray-700 hover:text-custom">
                         <div className="flex items-center space-x-2">
                             <LogOut className="h-4 w-4"/>
                             <span>LogOut</span>

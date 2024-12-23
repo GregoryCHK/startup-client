@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";  
 import Link from "next/link";
-import { ArrowRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 
 import React from 'react'
 
@@ -19,10 +19,10 @@ function BreadCrumbs() {
     */
 
   return (
-    <div>
-        <ul className="mt-2 mx-auto px-4 flex items-center space-x-1">
+    <div className="mt-2 px-4">
+        <ul className="flex items-center space-x-1">
             <li className="breadcrumbs"><Link href="/">Home</Link></li>
-            {pathSegments.length > 0 && <ArrowRight className="inline-block h-2 w-3 text-secondary-custom" />}
+            {pathSegments.length > 0 && <ChevronRight className="inline-block h-3 w-3 text-custom" />}
             {
                pathSegments.map((link, index) => {
                 let href = `/${pathSegments.slice(0, index + 1).join('/')}`
@@ -31,13 +31,13 @@ function BreadCrumbs() {
 
                 return (
                     <React.Fragment key={index}>
-                        <li className={isLast ? "text-secondary-custom text-xs hover:cursor-default" : "breadcrumbs"}>
+                        <li className={isLast ? "text-custom-secondary text-xs hover:cursor-default" : "breadcrumbs"}>
                             {isLast ? 
                             (<span>{nameLink}</span>)
                             :(<Link href={href}>{nameLink}</Link>)
                             }
                         </li>
-                        {pathSegments.length !== index + 1 && <ArrowRight className="inline-block h-2 w-3 text-secondary-custom" />}
+                        {pathSegments.length !== index + 1 && <ChevronRight className="inline-block h-2 w-3 text-custom" />}
                     </React.Fragment>
                 )
                }

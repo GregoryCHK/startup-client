@@ -20,7 +20,7 @@ function NavBar() {
     <nav className='bg-white shadow-sm'>
         <div className='mx-auto px-4'>
             <div className="flex justify-between items-center h-14">
-                <Link href='/' className='text-2xl font-semibold text-main'>
+                <Link href='/' className='text-2xl font-semibold text-custom'>
                     Logo
                 </Link>
                 <div className="hidden md:flex items-center h-full">
@@ -32,10 +32,10 @@ function NavBar() {
                     ))}
                 </div>
                 <div className='flex items-center space-x-3'>
-                    <Link href='/tasks' className='hover:text-main transition-colors duration-200'>
+                    <Link href='/tasks' className='hover:text-custom transition-colors duration-200'>
                         <CheckSquare className="h-4 w-4" />
                     </Link>
-                    <Link href='/calendar' className='hover:text-main transition-colors duration-200'>
+                    <Link href='/calendar' className='hover:text-custom transition-colors duration-200'>
                         <Calendar className="h-4 w-4" />
                     </Link>
                     <UserButton firstName='Stella' lastName='Politaki'/>
