@@ -33,50 +33,77 @@ import { Button } from "../ui/button"
 import { Input } from "@/components/ui/input"
 
 import * as React from "react"
-import { useState } from "react"
 import { Settings2, ChevronRight, ChevronLeft, CirclePlus, Plus } from "lucide-react"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  enablePagination?: boolean
 }
 
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
+// Function to highlight text when matching with the search
+function highlightText(text: string, query: string) {
+  if (!query) return text;
+
+  const regex = new RegExp(`(${query})`, "gi");
+  const parts = text.split(regex);
+
+  return parts.map((part, index) =>
+    regex.test(part) ? (
+      <span key={index} className="bg-custom-secondary">
+        {part}
+      </span>
+    ) : (
+      part
+    )
+  );
+}
+
+
+export function DataTable<TData, TValue>({columns, data, enablePagination = true}: DataTableProps<TData, TValue>) {
+
+  const memoizedColumns = React.useMemo(() => columns, [columns]);
+  const memoizedData = React.useMemo(() => data, [data]);
+
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
+  const [searchValue, setSearchValue] = React.useState("")
 
   const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
+    data: memoizedData,
+    columns: memoizedColumns,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
     },
+    getCoreRowModel: getCoreRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: enablePagination ? getPaginationRowModel(): undefined,
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    // ...(enablePagination && {getPaginationRowModel: getPaginationRowModel()}) // Only include pagination when enabled
   })
+
+  // Conditional rendering based on pagination state
+  const rowsToRender = enablePagination ? table.getRowModel().rows : memoizedData; // Show all rows if pagination is off
 
   return (
     <React.Fragment>
       {/* Search Bar and Utilities */}
       <div className="mb-2 flex items-center justify-between">
         <div className="flex items-center justify-start space-x-2 ">
+          {/* Search Value Selection */}
           <Input
-            placeholder="Search names..."
-            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-            onChange={(event) =>
-              table.getColumn("name")?.setFilterValue(event.target.value)
-            }
+            placeholder="Search..."
+            value={searchValue}
+            onChange={(event) => {
+              setSearchValue(event.target.value);
+              table.setGlobalFilter(event.target.value); // Use global filtering
+            }}
             className="w-[16rem]"
           />
           {/* Add Entry Button */}
@@ -145,7 +172,7 @@ export function DataTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+          {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -153,7 +180,11 @@ export function DataTable<TData, TValue>({
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      {typeof cell.getValue() === "string" ? (
+                        highlightText(cell.getValue() as string, searchValue)
+                      ) : (
+                        flexRender(cell.column.columnDef.cell, cell.getContext())
+                      )}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -169,24 +200,32 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
       {/* Pagination Buttons */}
-      <div className="flex items-center justify-end space-x-2 py-4">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            <ChevronLeft/>
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            <ChevronRight/>
-          </Button>
+      {enablePagination && 
+      <div className="flex items-center justify-between">
+        <div className="px-2 text-xs text-foreground">
+          Page {table.getState().pagination.pageIndex + 1} of{" "}
+          {table.getPageCount()}
+        </div>
+        <div className="flex items-center justify-end space-x-2 py-4">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              <ChevronLeft/>
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              <ChevronRight/>
+            </Button>
+        </div>
       </div>
+      }
     </React.Fragment>
   )
 }

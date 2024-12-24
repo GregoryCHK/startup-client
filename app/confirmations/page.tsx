@@ -1,5 +1,5 @@
 import { DataTable } from "@/components/Confirmations/DataTable"
-import {Confirmation, Columns} from "@/components/Confirmations/Columns"
+import {Confirmation, Columns} from "@/app/confirmations/Columns"
 
 import { useState } from "react";
 
@@ -99,8 +99,8 @@ export default function Page() {
     {
       id: 10,
       channel: "Online",
-      name: "John Doe",
-      email: "john.doe@example.com",
+      name: "Gus Frank",
+      email: "gus12345@example.com",
       contact: "+1234567890",
       start: new Date("2024-01-01"),
       end: new Date("2024-01-10"),
@@ -109,8 +109,8 @@ export default function Page() {
     {
       id: 11,
       channel: "Online",
-      name: "John Doe",
-      email: "john.doe@example.com",
+      name: "Grigoris Champas",
+      email: "grhak2000@gmail.com",
       contact: "+1234567890",
       start: new Date("2024-01-01"),
       end: new Date("2024-01-10"),
@@ -119,12 +119,32 @@ export default function Page() {
     {
       id: 12,
       channel: "Online",
-      name: "John Doe",
+      name: "Stella Politaki",
       email: "john.doe@example.com",
       contact: "+1234567890",
       start: new Date("2024-01-01"),
       end: new Date("2024-01-10"),
       stage: "Confirmed",
+    },
+    {
+      id: 13,
+      channel: "Online",
+      name: "Katerina Champa",
+      email: "katehk98@example.com",
+      contact: "+1234567890",
+      start: new Date("2024-01-01"),
+      end: new Date("2024-01-10"),
+      stage: "Confirmed",
+    },
+    {
+      id: 14,
+      channel: "Agent",
+      name: "Maria Politaki",
+      email: "mpolitaki@example.com",
+      contact: "+0987654321",
+      start: new Date("2024-01-15"),
+      end: new Date("2024-02-20"),
+      stage: "Pending",
     },
   ];
 
