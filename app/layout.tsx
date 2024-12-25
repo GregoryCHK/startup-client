@@ -25,8 +25,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={roboto.className}>
-        <NavBar />
-        <BreadCrumbs/>
+        <div className="sticky top-0 z-50 bg-background">
+          <NavBar />
+          <BreadCrumbs/>
+        </div>
         {children}
       </body>
     </html>

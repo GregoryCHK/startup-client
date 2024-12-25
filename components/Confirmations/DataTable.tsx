@@ -29,16 +29,25 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { Button } from "../ui/button"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 import * as React from "react"
-import { Settings2, ChevronRight, ChevronLeft, CirclePlus, Plus } from "lucide-react"
+import { Settings2, ChevronRight, ChevronLeft, ChevronsLeft, Plus, ChevronsRight } from "lucide-react"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   enablePagination?: boolean
+  enableScroll?: boolean
 }
 
 // Function to highlight text when matching with the search
@@ -60,7 +69,7 @@ function highlightText(text: string, query: string) {
 }
 
 
-export function DataTable<TData, TValue>({columns, data, enablePagination = true}: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({columns, data, enablePagination = true, enableScroll= true}: DataTableProps<TData, TValue>) {
 
   const memoizedColumns = React.useMemo(() => columns, [columns]);
   const memoizedData = React.useMemo(() => data, [data]);
@@ -152,38 +161,48 @@ export function DataTable<TData, TValue>({columns, data, enablePagination = true
       </div>
       {/* Table */}
       <div className="rounded-md border shadow">
-        <Table>
+      {/* Wrapper to handle fixed layout */}
+      <div className="w-full table-fixed">
+        <Table className="table-fixed">
+          {/* Static Header */}
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  )
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id} className="px-4 py-2">
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
+        </Table>
+      </div>
+
+      {/* Scrollable Body */}
+      <div className={`${enableScroll? "max-h-[560px] overflow-y-auto" : ""}`}>
+        <Table className="table-fixed">
           <TableBody>
-          {table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="px-4 py-2">
                       {typeof cell.getValue() === "string" ? (
                         highlightText(cell.getValue() as string, searchValue)
                       ) : (
-                        flexRender(cell.column.columnDef.cell, cell.getContext())
+                        flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )
                       )}
                     </TableCell>
                   ))}
@@ -191,7 +210,10 @@ export function DataTable<TData, TValue>({columns, data, enablePagination = true
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
                   No results.
                 </TableCell>
               </TableRow>
@@ -199,30 +221,71 @@ export function DataTable<TData, TValue>({columns, data, enablePagination = true
           </TableBody>
         </Table>
       </div>
-      {/* Pagination Buttons */}
+    </div>
+
+
+      {/* Pagination Buttons if pagination enabled*/}
       {enablePagination && 
       <div className="flex items-center justify-between">
+        {/* Page Count */}
         <div className="px-2 text-xs text-foreground">
-          Page {table.getState().pagination.pageIndex + 1} of{" "}
-          {table.getPageCount()}
+          Page {table.getState().pagination.pageIndex + 1} of{" "} {table.getPageCount()}
         </div>
+        {/* Pagination Buttons on the right */}
         <div className="flex items-center justify-end space-x-2 py-4">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              <ChevronLeft/>
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              <ChevronRight/>
-            </Button>
+          <div className="flex items-center space-x-4">
+              <span className="text-xs">Rows per page:</span>
+              {/* Rows Per Page Selector */}
+              <Select
+                value={`${table.getState().pagination.pageSize}`}
+                onValueChange={(value) => {table.setPageSize(Number(value))}} // Update pageSize state
+              >
+                <SelectTrigger className="w-[4rem] text-xs py-2 hover:text-custom">
+                  <SelectValue placeholder={table.getState().pagination.pageSize} />
+                </SelectTrigger>
+                <SelectContent>
+                  {[10, 15, 20, 30, 50].map((pageSize) => (
+                    <SelectItem className="focus:text-custom" key={pageSize} value={`${pageSize}`}>
+                      {pageSize}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.setPageIndex(0)}
+            disabled={!table.getCanPreviousPage()}
+          >
+            <span className="sr-only">Go to first page</span>
+            <ChevronsLeft />
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            <ChevronLeft/>
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            <ChevronRight/>
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+            disabled={!table.getCanNextPage()}
+          >
+            <span className="sr-only">Go to last page</span>
+            <ChevronsRight />
+          </Button>
         </div>
       </div>
       }
