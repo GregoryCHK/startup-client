@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import {Calendar, CheckSquare} from 'lucide-react'
 
-import UserButton from "@/components/NavBar/UserButton";
+import UserButton from "@/components/navbar/user-button";
 
 type MenuItem = {
     name: string;

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 
-import NavBar from "@/components/NavBar/NavBar";
-import BreadCrumbs from "@/components/BreadCrumbs";
+import NavBar from "@/components/navbar/navbar";
+import BreadCrumbs from "@/components/breadcrumbs";
 
 // Set up Roboto font
 const roboto = Roboto({

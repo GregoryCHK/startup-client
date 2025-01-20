@@ -25,14 +25,15 @@ import {
 
 import * as React from "react";
 
-import { DataTablePagination } from "./DataTablePagination";
-import {DataTableToolBar} from "./DataTableToolBar";
+import { DataTablePagination } from "./datatable-pagination";
+import {DataTableToolBar} from "./datatable-toolbar";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-  enablePagination?: boolean
-  enableScroll?: boolean
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  enablePagination?: boolean;
+  enableScroll?: boolean;
+  enableToolBar?: boolean;
 }
 
 // Function to highlight text when matching with the search
@@ -54,7 +55,7 @@ function highlightText(text: string, query: string) {
 }
 
 
-export function DataTable<TData, TValue>({columns, data, enablePagination = true, enableScroll= true}: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({columns, data, enablePagination=true, enableScroll=true, enableToolBar=true}: DataTableProps<TData, TValue>) {
 
   const memoizedColumns = React.useMemo(() => columns, [columns]);
   const memoizedData = React.useMemo(() => data, [data]);
@@ -88,7 +89,7 @@ export function DataTable<TData, TValue>({columns, data, enablePagination = true
   return (
     <React.Fragment>
       {/* Search Bar and Utilities */}
-      <DataTableToolBar table={table} searchValue={searchValue} setSearchValue={setSearchValue}/>
+      {enableToolBar && <DataTableToolBar table={table} searchValue={searchValue} setSearchValue={setSearchValue}/>}
       {/* Table */}
       <div className="rounded-md border shadow">
         {/* Wrapper to handle fixed layout */}
@@ -119,7 +120,7 @@ export function DataTable<TData, TValue>({columns, data, enablePagination = true
                     data-state={row.getIsSelected() && "selected"}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="px-4 py-2">
+                      <TableCell key={cell.id} className="px-4 py-2 [&:last-child]:h-full [&:last-child]:border-l [&:last-child]:px-0 [&:last-child]:py-0">
                         {typeof cell.getValue() === "string" ? (
                           highlightText(cell.getValue() as string, searchValue)
                         ) : (

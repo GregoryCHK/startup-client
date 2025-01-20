@@ -1,10 +1,11 @@
 "use client"
 
-import { ColumnDef } from "@tanstack/react-table"
-import { MoreHorizontal, ChevronsUpDown } from "lucide-react"
+import { ColumnDef } from "@tanstack/react-table";
+import { MoreHorizontal, ChevronsUpDown, CircleArrowRight } from "lucide-react";
 
+import Link from "next/link";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,19 +13,20 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 
 // This type is used to define the shape of the data.
 // You can use a Zod schema here if you want.
 export type Confirmation = {
-  id: number
-  channel: string
-  name: string
-  email: string
-  contact: string
-  start: Date
-  end: Date
-  stage: string
+  id: number;
+  channel: string;
+  name: string;
+  email: string;
+  contact: string;
+  start: Date;
+  end: Date;
+  priority: string;
+  status: string;
 }
 
 // Custom function to format dates
@@ -78,15 +80,33 @@ export const Columns: ColumnDef<Confirmation>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => formatDate(new Date(row.original.start)),
+    cell: ({ row }) => {const date = new Date(row.original.start);
+      const formattedDate = new Intl.DateTimeFormat("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }).format(date);
+  
+      return formattedDate;},
   },
   {
     accessorKey: "end",
     header: "End",
-    cell: ({ row }) => formatDate(new Date(row.original.end)),
+    cell: ({ row }) => {const date = new Date(row.original.end);
+      const formattedDate = new Intl.DateTimeFormat("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }).format(date);
+  
+      return formattedDate;},
   },
   {
-    accessorKey: "stage",
+    accessorKey:"priority",
+    header:"Priority",
+  },
+  {
+    accessorKey: "status",
     header: ({ column }) => {
       return (
         <Button
@@ -94,7 +114,7 @@ export const Columns: ColumnDef<Confirmation>[] = [
           className="px-0 hover:bg-transparent"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Stage
+          Status
           <ChevronsUpDown className="ml-[1px] h-4 w-4" />
         </Button>
       )
@@ -125,6 +145,17 @@ export const Columns: ColumnDef<Confirmation>[] = [
             <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+      )
+    },
+  },
+  {
+    id: "info",
+    header: "",
+    cell: ({ row }) => {
+      return(
+        <Link className="flex justify-center p-2" href={''}>
+          <CircleArrowRight className="h-5 w-5" strokeWidth={1.5}/>
+        </Link>
       )
     },
   },

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import {User, Settings, LogOut} from 'lucide-react';
 import Link from "next/link";
-import UserAvatar from "./UserAvatar";
+import UserAvatar from "./user-avatar";
 
 type UserButtonProps = {
     firstName: string;

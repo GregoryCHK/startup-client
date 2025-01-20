@@ -1,8 +1,5 @@
-import { DataTable } from "@/components/Confirmations/DataTable"
-import {Confirmation, Columns} from "@/app/confirmations/Columns"
-
-import { useState } from "react";
-import { table } from "console";
+import { DataTable } from "@/components/datatable-components/datatable"
+import {Confirmation, Columns} from "@/app/confirmations/columns"
 
 export default function Page() {
 
@@ -15,7 +12,8 @@ export default function Page() {
       contact: "+1234567890",
       start: new Date("2024-01-01"),
       end: new Date("2024-01-10"),
-      stage: "Confirmed",
+      priority: "High Priority",
+      status: "Confirmed",
     },
     {
       id: 2,
@@ -25,7 +23,8 @@ export default function Page() {
       contact: "+0987654321",
       start: new Date("2024-01-15"),
       end: new Date("2024-02-20"),
-      stage: "Pending",
+      priority: "Mid Priority",
+      status: "Pending",
     },
     {
       id: 3,
@@ -35,7 +34,8 @@ export default function Page() {
       contact: "+1122334455",
       start: new Date("2024-01-05"),
       end: new Date("2024-03-12"),
-      stage: "Cancelled",
+      priority: "Mid Priority",
+      status: "Cancelled",
     },
     {
       id: 4,
@@ -45,7 +45,8 @@ export default function Page() {
       contact: "+1234567890",
       start: new Date("2024-01-01"),
       end: new Date("2024-01-10"),
-      stage: "Confirmed",
+      priority: "Mid Priority",
+      status: "Confirmed",
     },
     {
       id: 5,
@@ -55,7 +56,8 @@ export default function Page() {
       contact: "+1234567890",
       start: new Date("2024-01-01"),
       end: new Date("2024-01-10"),
-      stage: "Confirmed",
+      priority: "Low Priority",
+      status: "Confirmed",
     },
     {
       id: 6,
@@ -65,7 +67,8 @@ export default function Page() {
       contact: "+1234567890",
       start: new Date("2024-01-01"),
       end: new Date("2024-01-10"),
-      stage: "Confirmed",
+      priority: "Low Priority",
+      status: "Confirmed",
     },
     {
       id: 7,
@@ -75,7 +78,8 @@ export default function Page() {
       contact: "+1234567890",
       start: new Date("2024-01-01"),
       end: new Date("2024-01-10"),
-      stage: "Confirmed",
+      priority: "Mid Priority",
+      status: "Confirmed",
     },
     {
       id: 8,
@@ -85,7 +89,8 @@ export default function Page() {
       contact: "+0987654321",
       start: new Date("2024-01-15"),
       end: new Date("2024-02-20"),
-      stage: "Pending",
+      priority: "High Priority",
+      status: "Pending",
     },
     {
       id: 9,
@@ -95,7 +100,8 @@ export default function Page() {
       contact: "+1122334455",
       start: new Date("2024-01-05"),
       end: new Date("2024-03-12"),
-      stage: "Cancelled",
+      priority: "Low Priority",
+      status: "Cancelled",
     },
     {
       id: 10,
@@ -105,7 +111,8 @@ export default function Page() {
       contact: "+1234567890",
       start: new Date("2024-01-01"),
       end: new Date("2024-01-10"),
-      stage: "Confirmed",
+      priority: "Mid Priority",
+      status: "Confirmed",
     },
     {
       id: 11,
@@ -115,7 +122,8 @@ export default function Page() {
       contact: "+1234567890",
       start: new Date("2024-01-01"),
       end: new Date("2024-01-10"),
-      stage: "Confirmed",
+      priority: "High Priority",
+      status: "Confirmed",
     },
     {
       id: 12,
@@ -125,7 +133,8 @@ export default function Page() {
       contact: "+1234567890",
       start: new Date("2024-01-01"),
       end: new Date("2024-01-10"),
-      stage: "Confirmed",
+      priority: "Low Priority",
+      status: "Confirmed",
     },
     {
       id: 13,
@@ -135,17 +144,8 @@ export default function Page() {
       contact: "+1234567890",
       start: new Date("2024-01-01"),
       end: new Date("2024-01-10"),
-      stage: "Confirmed",
-    },
-    {
-      id: 14,
-      channel: "Agent",
-      name: "Maria Politaki",
-      email: "mpolitaki@example.com",
-      contact: "+0987654321",
-      start: new Date("2024-01-15"),
-      end: new Date("2024-02-20"),
-      stage: "Pending",
+      priority: "High Priority",
+      status: "Confirmed",
     },
     {
       id: 1,
@@ -155,7 +155,8 @@ export default function Page() {
       contact: "+1234567890",
       start: new Date("2024-01-01"),
       end: new Date("2024-01-10"),
-      stage: "Confirmed",
+      priority: "High Priority",
+      status: "Confirmed",
     },
     {
       id: 2,
@@ -165,7 +166,8 @@ export default function Page() {
       contact: "+0987654321",
       start: new Date("2024-01-15"),
       end: new Date("2024-02-20"),
-      stage: "Pending",
+      priority: "Mid Priority",
+      status: "Pending",
     },
     {
       id: 3,
@@ -175,7 +177,8 @@ export default function Page() {
       contact: "+1122334455",
       start: new Date("2024-01-05"),
       end: new Date("2024-03-12"),
-      stage: "Cancelled",
+      priority: "Mid Priority",
+      status: "Cancelled",
     },
     {
       id: 4,
@@ -185,7 +188,8 @@ export default function Page() {
       contact: "+1234567890",
       start: new Date("2024-01-01"),
       end: new Date("2024-01-10"),
-      stage: "Confirmed",
+      priority: "Mid Priority",
+      status: "Confirmed",
     },
     {
       id: 5,
@@ -195,7 +199,8 @@ export default function Page() {
       contact: "+1234567890",
       start: new Date("2024-01-01"),
       end: new Date("2024-01-10"),
-      stage: "Confirmed",
+      priority: "Low Priority",
+      status: "Confirmed",
     },
     {
       id: 6,
@@ -205,7 +210,8 @@ export default function Page() {
       contact: "+1234567890",
       start: new Date("2024-01-01"),
       end: new Date("2024-01-10"),
-      stage: "Confirmed",
+      priority: "Low Priority",
+      status: "Confirmed",
     },
     {
       id: 7,
@@ -215,7 +221,8 @@ export default function Page() {
       contact: "+1234567890",
       start: new Date("2024-01-01"),
       end: new Date("2024-01-10"),
-      stage: "Confirmed",
+      priority: "Mid Priority",
+      status: "Confirmed",
     },
     {
       id: 8,
@@ -225,7 +232,8 @@ export default function Page() {
       contact: "+0987654321",
       start: new Date("2024-01-15"),
       end: new Date("2024-02-20"),
-      stage: "Pending",
+      priority: "High Priority",
+      status: "Pending",
     },
     {
       id: 9,
@@ -235,7 +243,8 @@ export default function Page() {
       contact: "+1122334455",
       start: new Date("2024-01-05"),
       end: new Date("2024-03-12"),
-      stage: "Cancelled",
+      priority: "Low Priority",
+      status: "Cancelled",
     },
     {
       id: 10,
@@ -245,7 +254,8 @@ export default function Page() {
       contact: "+1234567890",
       start: new Date("2024-01-01"),
       end: new Date("2024-01-10"),
-      stage: "Confirmed",
+      priority: "Mid Priority",
+      status: "Confirmed",
     },
     {
       id: 11,
@@ -255,7 +265,8 @@ export default function Page() {
       contact: "+1234567890",
       start: new Date("2024-01-01"),
       end: new Date("2024-01-10"),
-      stage: "Confirmed",
+      priority: "High Priority",
+      status: "Confirmed",
     },
     {
       id: 12,
@@ -265,7 +276,8 @@ export default function Page() {
       contact: "+1234567890",
       start: new Date("2024-01-01"),
       end: new Date("2024-01-10"),
-      stage: "Confirmed",
+      priority: "Low Priority",
+      status: "Confirmed",
     },
     {
       id: 13,
@@ -275,17 +287,8 @@ export default function Page() {
       contact: "+1234567890",
       start: new Date("2024-01-01"),
       end: new Date("2024-01-10"),
-      stage: "Confirmed",
-    },
-    {
-      id: 14,
-      channel: "Agent",
-      name: "Maria Politaki",
-      email: "mpolitaki@example.com",
-      contact: "+0987654321",
-      start: new Date("2024-01-15"),
-      end: new Date("2024-02-20"),
-      stage: "Pending",
+      priority: "High Priority",
+      status: "Confirmed",
     },
   ];
 
@@ -293,7 +296,7 @@ export default function Page() {
     <section className="mt-2 mx-4">
       {/* <hr className="shadow-sm"/> */}
       <div className="py-3">
-        <DataTable columns={Columns} data={mockData} enablePagination={true}></DataTable>
+        <DataTable columns={Columns} data={mockData} enablePagination={true} enableToolBar={true}></DataTable>
       </div>
     </section>
   )
