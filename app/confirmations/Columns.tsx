@@ -1,5 +1,7 @@
 "use client"
 
+import { useState } from "react";
+
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal, ChevronsUpDown, CircleArrowRight } from "lucide-react";
 
@@ -99,11 +101,50 @@ export const Columns: ColumnDef<Confirmation>[] = [
         year: "numeric",
       }).format(date);
   
-      return formattedDate;},
+      return formattedDate;
+    },
   },
   {
-    accessorKey:"priority",
+    
     header:"Priority",
+    cell: ({ row }) => {
+      type Priority = "High" | "Medium" | "Low";
+
+      const confirmation = row.original;
+      
+      // State to manage priority selection
+      const [priority, setPriority] = useState<Priority>(confirmation.priority as Priority);
+  
+      // Define styles for each priority level
+      const priorityColors = {
+        High : "bg-red-500 hover:bg-red-600 text-white",
+        Medium : "bg-yellow-500 hover:bg-yellow-600 text-black",
+        Low : "bg-green-500 hover:bg-green-600 text-white",
+      };
+  
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button className={`w-24 ${priorityColors[priority] || "bg-gray-300 text-black"}`}>
+              {priority}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            <DropdownMenuLabel className="">Priority</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => setPriority("High")}>
+              High 
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setPriority("Medium")}>
+              Medium 
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setPriority("Low")}>
+              Low 
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )  
+    }
   },
   {
     accessorKey: "status",

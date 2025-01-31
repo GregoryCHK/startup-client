@@ -23,7 +23,7 @@ export default function Page() {
       contact: "+0987654321",
       start: new Date("2024-01-15"),
       end: new Date("2024-02-20"),
-      priority: "Mid Priority",
+      priority: "Medium",
       status: "Pending",
     },
     {
