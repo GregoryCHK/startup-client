@@ -73,6 +73,12 @@ export function DataTable<TData, TValue>({columns, data, enablePagination=true, 
       columnFilters,
       columnVisibility,
     },
+    initialState: {
+      pagination: {
+        pageIndex: 0,
+        pageSize: 15
+      },
+    },
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),

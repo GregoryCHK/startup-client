@@ -1,6 +1,5 @@
 import { Table } from '@tanstack/react-table';
 import { ColumnsView } from './columns-view'; 
-import { status } from '../../app/confirmations/data';
 
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';

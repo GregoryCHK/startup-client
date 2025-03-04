@@ -27,7 +27,7 @@ export function DataTablePagination<TData>({table} : DataTablePaginationProps<TD
                   <SelectValue placeholder={table.getState().pagination.pageSize} />
                 </SelectTrigger>
                 <SelectContent>
-                  {[10, 15, 20, 30, 50].map((pageSize) => (
+                  {[15, 20, 30, 50].map((pageSize) => (
                     <SelectItem className="focus:text-custom" key={pageSize} value={`${pageSize}`}>
                       {pageSize}
                     </SelectItem>
