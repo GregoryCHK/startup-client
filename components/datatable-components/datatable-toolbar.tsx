@@ -8,6 +8,7 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 
 
 import { Plus, Settings2 } from 'lucide-react';
+
 interface DataTableToolBarProps<TData>{
     table: Table<TData>;
     searchValue: string;

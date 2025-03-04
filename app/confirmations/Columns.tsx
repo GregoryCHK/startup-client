@@ -22,6 +22,7 @@ import {
 export type Confirmation = {
   id: number;
   channel: string;
+  agent: string;
   name: string;
   email: string;
   contact: string;
@@ -55,6 +56,10 @@ export const Columns: ColumnDef<Confirmation>[] = [
         </Button>
       )
     },
+  },
+  {
+    accessorKey:"agent",
+    header:"Agent",
   },
   {
     accessorKey: "name",
@@ -105,7 +110,6 @@ export const Columns: ColumnDef<Confirmation>[] = [
     },
   },
   {
-    
     header:"Priority",
     cell: ({ row }) => {
       type Priority = "High" | "Medium" | "Low";
@@ -117,9 +121,9 @@ export const Columns: ColumnDef<Confirmation>[] = [
   
       // Define styles for each priority level
       const priorityColors = {
-        High : "bg-red-500 hover:bg-red-600 text-white",
-        Medium : "bg-yellow-500 hover:bg-yellow-600 text-black",
-        Low : "bg-green-500 hover:bg-green-600 text-white",
+        High : "bg-[#B22C45] hover:bg-[#FF5147] text-white",
+        Medium : "bg-[#E6B467] hover:bg-[#F3C97B] text-black",
+        Low : "bg-custom hover:bg-[#06919e] text-white",
       };
   
       return (
@@ -147,18 +151,24 @@ export const Columns: ColumnDef<Confirmation>[] = [
     }
   },
   {
-    accessorKey: "status",
-    header: ({ column }) => {
+    header: "Status",
+    cell: ({row}) => {
+      type Status = "Confirmed" | "Pending" | "Cancelled";
+
+      const status = row.original.status as Status;
+
+      // Define styles for each status
+      const statusColors = {
+        Cancelled : "text-[#B22C45]",
+        Pending : "text-[#E6B467]",
+        Confirmed : "text-custom",
+      };
+
       return (
-        <Button
-          variant="ghost"
-          className="px-0 hover:bg-transparent"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Status
-          <ChevronsUpDown className="ml-[1px] h-4 w-4" />
-        </Button>
-      )
+        <span className={`${statusColors[status]}`}>
+          {status}
+        </span>
+      );
     },
   },
   {
@@ -170,7 +180,6 @@ export const Columns: ColumnDef<Confirmation>[] = [
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
@@ -182,7 +191,7 @@ export const Columns: ColumnDef<Confirmation>[] = [
               Copy Confirmation ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
+            <DropdownMenuItem>View Customer Details</DropdownMenuItem>
             <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
