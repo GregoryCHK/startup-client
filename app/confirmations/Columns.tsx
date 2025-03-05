@@ -121,7 +121,7 @@ export const Columns: ColumnDef<Confirmation>[] = [
   
       // Define styles for each priority level
       const priorityColors = {
-        High : "bg-[#B22C45] hover:bg-[#FF5147] text-white",
+        High : "bg-[#AB274E] hover:bg-[#cf305e] text-white",
         Medium : "bg-[#E6B467] hover:bg-[#F3C97B] text-black",
         Low : "bg-custom hover:bg-[#06919e] text-white",
       };
@@ -159,7 +159,7 @@ export const Columns: ColumnDef<Confirmation>[] = [
 
       // Define styles for each status
       const statusColors = {
-        Cancelled : "text-[#B22C45]",
+        Cancelled : "text-[#AB274E]",
         Pending : "text-[#E6B467]",
         Confirmed : "text-custom",
       };
