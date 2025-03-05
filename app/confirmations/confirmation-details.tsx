@@ -16,23 +16,23 @@ function ConfirmationDetails({confirmation}: ConfirmationProps) {
       <div className="flex flex-col gap-4">
         <div>
           <label className="text-sm text-gray-600">Name</label>
-          <Input value={confirmation.name} readOnly className='text-foreground' />
-        </div>
-        <div>
-          <label className="text-sm text-gray-600">Channel</label>
-          <Input value={confirmation.channel} readOnly className='text-foreground' />
+          <Input value={confirmation.name} readOnly className='text-foreground w-[50%]' />
         </div>
         <div>
           <label className="text-sm text-gray-600">Email</label>
-          <Input value={confirmation.email} readOnly className="text-blue-600 underline cursor-pointer" />
+          <Input value={confirmation.email} readOnly className="text-blue-600 underline cursor-pointer w-[50%]" />
         </div>
         <div>
-          <label className="text-sm text-gray-600 text-foreground">Contact</label>
-          <Input value={confirmation.contact} readOnly />
+          <label className="text-sm text-gray-600 text-foreground ">Contact</label>
+          <Input value={confirmation.contact} readOnly className='w-[50%]'/>
         </div>
         <div>
           <label className="text-sm text-gray-600">No. of People</label>
-          <Input value={confirmation.pax} readOnly />
+          <Input value={confirmation.pax} readOnly className='w-[50%]' />
+        </div>
+        <div>
+          <label className="text-sm text-gray-600">Channel</label>
+          <Input value={confirmation.channel} readOnly className='text-foreground w-[50%]' />
         </div>
       </div>
 
@@ -40,11 +40,11 @@ function ConfirmationDetails({confirmation}: ConfirmationProps) {
       <div className="flex flex-col gap-4">
         <div>
           <label className="text-sm text-gray-600">Destinations</label>
-          <Textarea value={confirmation.destinations} readOnly rows={3} className='text-foreground' />
+          <Textarea value={confirmation.destinations} readOnly rows={4} className='text-foreground' />
         </div>
-        <div>
+        <div className=''>
           <label className="text-sm text-gray-600">Notes</label>
-          <Textarea value={confirmation.notes} readOnly rows={3} className='text-foreground'/>
+          <Textarea value={confirmation.notes} readOnly rows={4} className='text-foreground'/>
         </div> 
         <div>
             <label className="text-sm text-gray-600">Amount</label>

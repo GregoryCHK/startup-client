@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 interface BasicModalProps {
     isOpen: boolean,
@@ -28,4 +28,4 @@ function BasicModal({isOpen, onClose, title, children} : BasicModalProps) {
 
 
 
-export default BasicModal
+export default BasicModal;
