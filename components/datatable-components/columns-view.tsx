@@ -26,7 +26,7 @@ export function ColumnsView<TData>({table}: ColumnsViewProps<TData>) {
             {table
               .getAllColumns()
               .filter(
-                (column) => column.getCanHide() && column.id !== "actions" // Exclude "actions". Always on view
+                (column) => column.getCanHide() && column.id !== "actions" && column.id !== "info" // Exclude "actions". Always on view
               )
               .map((column) => {
                 return (

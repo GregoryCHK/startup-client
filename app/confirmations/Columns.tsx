@@ -16,6 +16,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import BasicModal from "@/components/basic-modal";
+import ConfirmationDetails from "./confirmation-details";
 
 // This type is used to define the shape of the data.
 // You can use a Zod schema here if you want.
@@ -30,15 +32,21 @@ export type Confirmation = {
   end: Date;
   priority: string;
   status: string;
+  pax: number;
+  depositAmount: number;
+  destinations: string;
+  notes: string;
 }
 
 // Custom function to format dates
-function formatDate(date: Date): string {
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
-  const year = date.getFullYear();
-  return `${month}/${day}/${year}`;
-}
+export const formatDate = (dateString: string | Date) => {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(date);
+};
 
 
 export const Columns: ColumnDef<Confirmation>[] = [
@@ -87,27 +95,13 @@ export const Columns: ColumnDef<Confirmation>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => {const date = new Date(row.original.start);
-      const formattedDate = new Intl.DateTimeFormat("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      }).format(date);
-  
-      return formattedDate;},
+    cell: ({ row }) => formatDate(row.original.start),
   },
   {
     accessorKey: "end",
     header: "End",
-    cell: ({ row }) => {const date = new Date(row.original.end);
-      const formattedDate = new Intl.DateTimeFormat("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      }).format(date);
-  
-      return formattedDate;
-    },
+    cell: ({ row }) => formatDate(row.original.end),
+    
   },
   {
     header:"Priority",
@@ -174,9 +168,12 @@ export const Columns: ColumnDef<Confirmation>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const confirmation = row.original
- 
+      const confirmation = row.original;
+      
+      const [isModalOpen, setIsModalOpen] = useState(false);
+
       return (
+        <>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -191,10 +188,15 @@ export const Columns: ColumnDef<Confirmation>[] = [
               Copy Confirmation ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View Customer Details</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setIsModalOpen((prev) => !prev)}>View Confirmation Details</DropdownMenuItem>
             <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <BasicModal isOpen={isModalOpen} onClose={() => setIsModalOpen((prev) => !prev)} title={"Confirmation Details"}>
+          <ConfirmationDetails confirmation={confirmation}></ConfirmationDetails>
+        </BasicModal>
+        </>
       )
     },
   },
