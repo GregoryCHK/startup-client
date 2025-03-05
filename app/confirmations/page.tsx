@@ -1,5 +1,5 @@
 import { DataTable } from "@/components/datatable-components/datatable"
-import {Confirmation, Columns} from "@/app/confirmations/columns"
+import {Confirmation, Columns} from "@/app/confirmations/Columns"
 
 export default function Page() {
 
