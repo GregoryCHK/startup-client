@@ -76,7 +76,7 @@ export function DataTable<TData, TValue>({columns, data, enablePagination=true, 
     initialState: {
       pagination: {
         pageIndex: 0,
-        pageSize: 20
+        pageSize: 15,
       },
     },
     getCoreRowModel: getCoreRowModel(),
@@ -99,7 +99,7 @@ export function DataTable<TData, TValue>({columns, data, enablePagination=true, 
       {/* Table */}
       <div className="rounded-md border shadow">
         {/* Wrapper to handle fixed layout */}
-        <div className="relative w-full max-h-[70vh] overflow-y-auto">
+        <div className="relative w-full max-h-[75vh] overflow-y-auto">
           <Table>
             {/* Static Header */}
             <TableHeader>
