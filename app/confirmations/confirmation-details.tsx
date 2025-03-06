@@ -23,12 +23,12 @@ function ConfirmationDetails({confirmation}: ConfirmationProps) {
           <Input value={confirmation.email} readOnly className="text-blue-600 underline cursor-pointer w-[50%]" />
         </div>
         <div>
-          <label className="text-sm text-gray-600 text-foreground ">Contact</label>
-          <Input value={confirmation.contact} readOnly className='w-[50%]'/>
+          <label className="text-sm text-gray-600">Contact</label>
+          <Input value={confirmation.contact} readOnly className='text-foreground w-[50%]'/>
         </div>
         <div>
           <label className="text-sm text-gray-600">No. of People</label>
-          <Input value={confirmation.pax} readOnly className='w-[50%]' />
+          <Input value={confirmation.pax} readOnly className='text-foreground w-[50%]' />
         </div>
         <div>
           <label className="text-sm text-gray-600">Channel</label>
