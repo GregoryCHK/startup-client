@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 
-import NavBar from "@/components/navbar/navbar";
+import NavBar from "@/components/navbar/Navbar";
 import BreadCrumbs from "@/components/breadcrumbs";
+import QueryProvider from "@/providers/query-provider";
 
 // Set up Roboto font
 const roboto = Roboto({
@@ -25,11 +26,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={roboto.className}>
-        <div className="sticky top-0 z-50 bg-background">
-          <NavBar />
-          <BreadCrumbs/>
-        </div>
-        {children}
+        <QueryProvider>
+          <div className="sticky top-0 z-50 bg-background">
+            <NavBar />
+            <BreadCrumbs/>
+          </div>
+          {children}
+        </QueryProvider>
       </body>
     </html>
   );
