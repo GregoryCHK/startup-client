@@ -5,9 +5,12 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { DataTable } from "@/components/datatable-components/datatable"
 import {Confirmation, Columns} from "@/app/confirmations/columns"
 
+import { API_ENDPOINTS } from "@/lib/api";
+
+
 // Fetching Function
 async function fetchConfirmations(): Promise<Confirmation[]> {
-  const response = await fetch("http://127.0.0.1:8000/confirmations/");
+  const response = await fetch(API_ENDPOINTS.CONFIRMATIONS);
   const data = await response.json();
 
   // Dates are converted to Date objects for Confirmations Type
