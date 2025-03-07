@@ -2,22 +2,40 @@
 
 import { useQuery, useMutation } from "@tanstack/react-query";
 
-import { DataTable } from "@/components/datatable-components/datatable"
-import {Confirmation, Columns} from "@/app/confirmations/columns"
+import { DataTable } from "@/components/datatable-components/datatable";
+import {Confirmation, Columns} from "@/app/confirmations/columns";
 
 import { API_ENDPOINTS } from "@/lib/api";
 
+// Used for converting the names of variable (to keep naming conventions consistent)
+type ConfirmationApiResponse = {
+  id: number;
+  channel: string;
+  agent: string;
+  name: string;
+  email: string;
+  contact: string;
+  start_date: string; // API returns a string
+  end_date: string;
+  priority: string;
+  status: string;
+  pax: number;
+  deposit_amount: number; // Snake case from API
+  destinations: string;
+  notes: string;
+};
 
 // Fetching Function
 async function fetchConfirmations(): Promise<Confirmation[]> {
   const response = await fetch(API_ENDPOINTS.CONFIRMATIONS);
-  const data = await response.json();
+  const data: ConfirmationApiResponse[] = await response.json();
 
-  // Dates are converted to Date objects for Confirmations Type
-  return data.map((confirmation: any) => ({
-    ...confirmation,
-    start_date: new Date(confirmation.start_date), // Convert to Date
-    end_date: new Date(confirmation.end_date),     // Convert to Date
+  // Directly return the mapped response
+  return data.map(({ start_date, end_date, deposit_amount, ...item }) => ({
+    ...item,
+    start: new Date(start_date),
+    end: new Date(end_date),
+    depositAmount: deposit_amount,
   }));
 }
 
@@ -50,7 +68,6 @@ export default function Page() {
 
   if (isLoading) return <p className="flex items-center justify-center mt-10 text-xl text-custom">Loading...</p>;
   if (error) return <p>Error: {(error as Error).message}</p>;
-  console.log(data); 
 
   return (
     <section className="mt-2 mx-4">

@@ -58,14 +58,14 @@ function ConfirmationDetails({confirmation}: ConfirmationProps) {
           <div>
             <label className="text-sm text-gray-600">Start Date</label>
             <Button variant="outline" className="w-full flex justify-between text-foreground">
-              {formatDate(confirmation.start_date)}
+              {formatDate(confirmation.start)}
               <CalendarIcon className="w-4 h-4 ml-2" />
             </Button>
           </div>
           <div>
             <label className="text-sm text-gray-600">End Date</label>
             <Button variant="outline" className="w-full flex justify-between text-foreground" >
-              {formatDate(confirmation.end_date)}
+              {formatDate(confirmation.end)}
               <CalendarIcon className="w-4 h-4 ml-2" />
             </Button>
           </div>
