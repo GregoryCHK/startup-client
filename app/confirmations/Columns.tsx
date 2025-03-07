@@ -28,8 +28,8 @@ export type Confirmation = {
   name: string;
   email: string;
   contact: string;
-  start: Date;
-  end: Date;
+  start_date: Date;
+  end_date: Date;
   priority: string;
   status: string;
   pax: number;
@@ -82,7 +82,7 @@ export const Columns: ColumnDef<Confirmation>[] = [
     header: "Contact",
   },
   {
-    accessorKey: "start",
+    accessorKey: "start_date",
     header: ({ column }) => {
       return (
         <Button
@@ -95,12 +95,12 @@ export const Columns: ColumnDef<Confirmation>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => formatDate(row.original.start),
+    cell: ({ row }) => formatDate(row.original.start_date),
   },
   {
-    accessorKey: "end",
+    accessorKey: "end_date",
     header: "End",
-    cell: ({ row }) => formatDate(row.original.end),
+    cell: ({ row }) => formatDate(row.original.end_date),
     
   },
   {
