@@ -28,6 +28,8 @@ type ConfirmationApiResponse = {
 // Fetching Function
 async function fetchConfirmations(): Promise<Confirmation[]> {
   const response = await fetch(API_ENDPOINTS.CONFIRMATIONS);
+  if (!response.ok) throw new Error("Error fetching data");
+
   const data: ConfirmationApiResponse[] = await response.json();
 
   // Directly return the mapped response
@@ -41,8 +43,28 @@ async function fetchConfirmations(): Promise<Confirmation[]> {
 
 
 export default function Page() {
+  
+  // Query Function
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["confirmations"],
+    queryFn: fetchConfirmations,
+    staleTime: 10000,
+  });
 
-  // const mockData = [
+  if (isLoading) return <p className="flex items-center justify-center mt-10 text-xl text-custom">Loading...</p>;
+  if (error) return <p>Error occured: {(error as Error).message}</p>;
+
+  return (
+    <section className="mt-2 mx-4">
+      {/* <hr className="shadow-sm"/> */}
+      <div className="py-3">
+        <DataTable columns={Columns} data={data || []} enablePagination={true} enableToolBar={true}></DataTable>
+      </div>
+    </section>
+  )
+}
+
+// const mockData = [
   //   { id: 1, channel: "Online", agent: "Stella", name: "John Doe", email: "john.doe@example.com", contact: "+1234567890", start: new Date("2024-01-01"), end: new Date("2024-01-10"), priority: "High", status: "Confirmed", pax: 2, depositAmount: 1000, destinations: "Athens, Santorini", notes: "Honeymoon package" },
   //   { id: 2, channel: "Agent", agent: "Gregory", name: "Jane Smith", email: "jane.smith@example.com", contact: "+0987654321", start: new Date("2024-01-15"), end: new Date("2024-02-20"), priority: "Medium", status: "Pending", pax: 4, depositAmount: 1500, destinations: "Mykonos, Paros", notes: "All-inclusive package" },
   //   { id: 3, channel: "Referral", agent: "Gregory", name: "Bob Johnson", email: "bob.johnson@example.com", contact: "+1122334455", start: new Date("2024-01-05"), end: new Date("2024-03-12"), priority: "Medium", status: "Cancelled", pax: 3, depositAmount: 500, destinations: "Corfu, Rhodes", notes: "Vegetarian meals requested" },
@@ -60,21 +82,3 @@ export default function Page() {
   //   { id: 15, channel: "Referral", agent: "Dimitris", name: "Stefanos Nikolaou", email: "stefanos.n@example.com", contact: "+3698521470", start: new Date("2024-10-10"), end: new Date("2024-10-25"), priority: "High", status: "Confirmed", pax: 5, depositAmount: 2500, destinations: "Santorini, Mykonos, Paros", notes: "VIP package" },
   //   { id: 16, channel: "Corporate", agent: "Eleni", name: "Christina Pavlou", email: "christina.p@example.com", contact: "+1593574862", start: new Date("2024-11-20"), end: new Date("2024-11-30"), priority: "Medium", status: "Confirmed", pax: 8, depositAmount: 4000, destinations: "Crete, Rhodes", notes: "Corporate retreat" },
   // ];
-
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["confirmations"],
-    queryFn: fetchConfirmations,
-  });
-
-  if (isLoading) return <p className="flex items-center justify-center mt-10 text-xl text-custom">Loading...</p>;
-  if (error) return <p>Error: {(error as Error).message}</p>;
-
-  return (
-    <section className="mt-2 mx-4">
-      {/* <hr className="shadow-sm"/> */}
-      <div className="py-3">
-        <DataTable columns={Columns} data={data || []} enablePagination={true} enableToolBar={true}></DataTable>
-      </div>
-    </section>
-  )
-}

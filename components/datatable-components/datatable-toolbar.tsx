@@ -1,12 +1,18 @@
+"use state";
+
 import { Table } from '@tanstack/react-table';
+import { useState } from 'react';
+
 import { ColumnsView } from './columns-view'; 
+import BasicModal from '../basic-modal';
+import AddConfirmation from '@/app/confirmations/add-confirmation';
 
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '../ui/dropdown-menu';
 
-
 import { Plus, Settings2 } from 'lucide-react';
+
 
 interface DataTableToolBarProps<TData>{
     table: Table<TData>;
@@ -15,9 +21,11 @@ interface DataTableToolBarProps<TData>{
 }
 
 export function DataTableToolBar<TData>({table, searchValue, setSearchValue} : DataTableToolBarProps<TData>) {
-
+  
+  const [isModalOpen, setIsModalOpen] = useState(false);
     
   return (
+    <>
     <div className="mb-2 flex items-center justify-between">
       {/* Search Value Selection */}
       <div className="flex items-center justify-start space-x-2 ">
@@ -31,7 +39,7 @@ export function DataTableToolBar<TData>({table, searchValue, setSearchValue} : D
           className="w-[16rem]"
         />
         {/* Add Entry Button */}
-        <Button variant="outline" onClick={() => {}}>
+        <Button variant="outline" onClick={() => setIsModalOpen((prev) => !prev)}>
           {/* <CirclePlus/> */}
           <Plus />
           Add
@@ -42,5 +50,11 @@ export function DataTableToolBar<TData>({table, searchValue, setSearchValue} : D
         <ColumnsView table={table}/>
       </div>
     </div>
+    
+    <BasicModal isOpen={isModalOpen} onClose={() => setIsModalOpen((prev) => !prev)} title={"Add New Confirmation"}>
+      <div>Hey</div>
+      <AddConfirmation/>
+    </BasicModal>
+    </>
   )
 }
