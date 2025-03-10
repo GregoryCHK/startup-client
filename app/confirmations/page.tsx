@@ -3,47 +3,28 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 
 import { DataTable } from "@/components/datatable-components/datatable";
-import {Confirmation, Columns} from "@/app/confirmations/columns";
+import { Columns } from "@/app/confirmations/columns";
+import { Confirmation } from "../../types/confirmation";
 
 import { API_ENDPOINTS } from "@/lib/api";
-
-// Used for converting the names of variable (to keep naming conventions consistent)
-type ConfirmationApiResponse = {
-  id: number;
-  channel: string;
-  agent: string;
-  name: string;
-  email: string;
-  contact: string;
-  start_date: string; // API returns a string
-  end_date: string;
-  priority: string;
-  status: string;
-  pax: number;
-  deposit_amount: number; // Snake case from API
-  destinations: string;
-  notes: string;
-};
+import { toCamelCase } from "@/lib/utils";
 
 // Fetching Function
 async function fetchConfirmations(): Promise<Confirmation[]> {
   const response = await fetch(API_ENDPOINTS.CONFIRMATIONS);
   if (!response.ok) throw new Error("Error fetching data");
 
-  const data: ConfirmationApiResponse[] = await response.json();
+  const data = await response.json();
 
-  // Directly return the mapped response
-  return data.map(({ start_date, end_date, deposit_amount, ...item }) => ({
-    ...item,
-    start: new Date(start_date),
-    end: new Date(end_date),
-    depositAmount: deposit_amount,
+  return data.map((item: any) => ({
+      ...toCamelCase(item),
+      startDate: item.start_date ? new Date(item.start_date) : null,
+      endDate: item.end_date ? new Date(item.end_date) : null,
   }));
-}
+};
 
 
 export default function Page() {
-  
   // Query Function
   const { data, isLoading, error } = useQuery({
     queryKey: ["confirmations"],
@@ -52,8 +33,8 @@ export default function Page() {
   });
 
   if (isLoading) return <p className="flex items-center justify-center mt-10 text-xl text-custom">Loading...</p>;
-  if (error) return <p>Error occured: {(error as Error).message}</p>;
-
+  if (error) return <p className="flex items-center justify-center mt-10 text-xl text-custom">Error occured: <span className="italic text-custom-secondary font-extralight">{( error as Error).message}</span></p>;
+  console.log(data);
   return (
     <section className="mt-2 mx-4">
       {/* <hr className="shadow-sm"/> */}

@@ -5,6 +5,10 @@ import { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal, ChevronsUpDown, CircleArrowRight } from "lucide-react";
 
+import BasicModal from "@/components/basic-modal";
+import ConfirmationDetails from "./confirmation-details";
+import { Confirmation } from "../../types/confirmation";
+
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -16,27 +20,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import BasicModal from "@/components/basic-modal";
-import ConfirmationDetails from "./confirmation-details";
 
-// This type is used to define the shape of the data.
-// You can use a Zod schema here if you want.
-export type Confirmation = {
-  id: number;
-  channel: string;
-  agent: string;
-  name: string;
-  email: string;
-  contact: string;
-  start: Date;
-  end: Date;
-  priority: string;
-  status: string;
-  pax: number;
-  depositAmount: number;
-  destinations: string;
-  notes: string;
-}
+
 
 // Custom function to format dates
 export const formatDate = (dateString: string | Date) => {
@@ -82,7 +67,7 @@ export const Columns: ColumnDef<Confirmation>[] = [
     header: "Contact",
   },
   {
-    accessorKey: "start_date",
+    accessorKey: "startDate",
     header: ({ column }) => {
       return (
         <Button
@@ -95,12 +80,12 @@ export const Columns: ColumnDef<Confirmation>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => formatDate(row.original.start),
+    cell: ({ row }) => formatDate(row.original.startDate),
   },
   {
-    accessorKey: "end_date",
+    accessorKey: "endDate",
     header: "End",
-    cell: ({ row }) => formatDate(row.original.end),
+    cell: ({ row }) => formatDate(row.original.endDate),
     
   },
   {

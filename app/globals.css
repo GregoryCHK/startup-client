@@ -8,6 +8,10 @@
     }
 }
 
+.input-field {
+  @apply w-full p-2 border border-border rounded-lg focus:ring-2 focus:ring-custom focus:outline-none;
+}
+
 @layer components{
     .breadcrumbs{
         @apply text-custom text-xs hover:text-custom-secondary;

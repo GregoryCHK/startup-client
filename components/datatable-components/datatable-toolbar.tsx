@@ -52,8 +52,7 @@ export function DataTableToolBar<TData>({table, searchValue, setSearchValue} : D
     </div>
     
     <BasicModal isOpen={isModalOpen} onClose={() => setIsModalOpen((prev) => !prev)} title={"Add New Confirmation"}>
-      <div>Hey</div>
-      <AddConfirmation/>
+      <AddConfirmation onClose={() => setIsModalOpen((prev) => !prev)}/>
     </BasicModal>
     </>
   )
