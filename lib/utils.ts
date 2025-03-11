@@ -1,26 +1,29 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+import { format, parse } from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-// Convert camelCase → snake_case (for sending data to the backend)
-export const toSnakeCase = (obj: any) => {
+// Convert camelCase → snake_case and formats Date Object to String (for sending data to the backend)
+export const serializeToSnakeCase = (obj: any) => {
   return Object.fromEntries(
       Object.entries(obj).map(([key, value]) => [
           key.replace(/([A-Z])/g, "_$1").toLowerCase(), 
-          value
+          value instanceof Date ? format(value, "yyyy-MM-dd") : value, // Format dates
       ])
   );
 };
 
-// Convert snake_case → camelCase (for receiving data from the backend)
-export const toCamelCase = (obj: any) => {
+// Convert snake_case → camelCase and formats String Object to Date (for receiving data from the backend)
+export const deserializeToCamelCase = (obj: any) => {
   return Object.fromEntries(
       Object.entries(obj).map(([key, value]) => [
           key.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase()), 
-          value
+          typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value) // Check if it's a valid date string (yyyy-MM-dd)
+          ? parse(value, "yyyy-MM-dd", new Date()) // Convert back to Date object
+          : value,
       ])
   );
 };

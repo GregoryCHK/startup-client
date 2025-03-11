@@ -1,5 +1,6 @@
 import React from 'react';
 import { X } from 'lucide-react';
+import { Button } from './ui/button';
 
 interface BasicModalProps {
     isOpen: boolean,
@@ -17,10 +18,10 @@ function BasicModal({isOpen, onClose, title, children} : BasicModalProps) {
             <h2 className='text-center font-bold  text-custom-secondary'>{title}</h2>
             {children}
 
-            <div className="absolute top-3 right-3 text-foreground/50 hover:text-custom">
-                <button className="" onClick={onClose}>
-                    <X />
-                </button>
+            <div className="absolute top-3 right-3 ">
+                <Button size="sm" variant="ghost" className='shadow-none text-foreground/50' onClick={onClose}>
+                    <X/>
+                </Button>
             </div>
             {/* <div className="mt-6 flex justify-center ">
                 <button className="bg-custom-secondary hover:bg-custom text-white px-4 py-1 rounded-2xl w-[50%]" onClick={onClose}>

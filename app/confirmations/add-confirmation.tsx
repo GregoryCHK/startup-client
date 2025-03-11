@@ -1,29 +1,14 @@
-import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 
 import { API_ENDPOINTS } from "@/lib/api";
-import { toSnakeCase } from "@/lib/utils";
+import { addConfirmation } from "@/lib/api/confirmations";
+import { serializeToSnakeCase, cn } from "@/lib/utils";
 import { Confirmation } from "../../types/confirmation";
-import { Divide } from "lucide-react";
 
-
-const addConfirmation = async (newConfirmation: Omit<Confirmation, "id">) => {
-    const snakeCaseConfirmation = toSnakeCase(newConfirmation); // Convert the object keys to snake_case for django naming conventions
-    // console.log("Sending confirmation:", snakeCaseConfirmation); // Log the transformed object
-
-    const response = await fetch(API_ENDPOINTS.CONFIRMATIONS, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(snakeCaseConfirmation),  // Send the snake_case object 
-    });
-
-    if (!response.ok) {
-        throw new Error('Error creating confirmation');
-    }
-
-    return response.json();
-};
+import DatePicker from "@/components/date-picker";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 interface AddConfirmationProps{
     onClose: () => void;
@@ -34,7 +19,9 @@ export default function AddConfirmation ({onClose}: AddConfirmationProps) {
     const { 
         register, 
         handleSubmit, 
+        control,
         setError,
+        reset,
         formState: { errors, isSubmitting },
     } = useForm<Omit<Confirmation, "id">>();
 
@@ -44,12 +31,21 @@ export default function AddConfirmation ({onClose}: AddConfirmationProps) {
     // Use useMutation hook for the POST request
     const mutation = useMutation({
         mutationFn: addConfirmation,
-        onSuccess: () => {
-            // console.log("Confirmation added successfully!", newConfirmation);
+        onSuccess: (data) => {
             queryclient.invalidateQueries({queryKey: ["confirmations"]}); // Rerenders the confirmations using the querykey initializes in pages.tsx
-            // reset();
+            reset();
+            toast(`${data.name} added succesfully!`, {  
+                duration: 4000,
+                position: "bottom-right",
+                style: { backgroundColor: "#006D77", color: "white" },
+            });
         },
         onError: (error) => {
+            toast( "Something went wrong!", {  
+                duration: 4000,
+                position: "bottom-right",
+                style: { backgroundColor: "#AB274E", color: "white" },
+            });
             console.error("Failed to add confirmation:", error);
         }
     });
@@ -61,7 +57,7 @@ export default function AddConfirmation ({onClose}: AddConfirmationProps) {
         } catch (error) {
             // console.error("Error during submission:", error);
             setError("status", {
-                message: "Something went wrong!"
+                message:"Please check again all the required fields!",
             });
         }
     };
@@ -116,59 +112,96 @@ export default function AddConfirmation ({onClose}: AddConfirmationProps) {
             
             {/* Pax & Deposit */}
             <div className="grid grid-cols-2 gap-4">
-                <input
-                    {...register("pax", {
-                        required: "No. of People can't be negative",
-                        min: 0, // Prevent negative numbers 
-                    })} 
-                    type="number" 
-                    placeholder="Pax"
-                    className="input-field" 
-                />
-                <input 
-                    {...register("depositAmount",{
-                        required: true,
-                        min: 0, // Prevent negative numbers
-                    })} 
-                    type="number" 
-                    placeholder="Deposit Amount"
-                    className="input-field"
-                />
+                <div className="flex flex-col">
+                    <input
+                        {...register("pax", {
+                            required: "No. of People can't be zero or negative",
+                            min: 0, // Prevent negative numbers 
+                        })} 
+                        type="number" 
+                        min="0"
+                        placeholder="Pax"
+                        className="input-field" 
+                    />
+                    {errors.pax && <div className="px-2 text-[#AB274E] italic text-sm mt-1">{errors.pax.message}</div>}
+                </div>
+                <div className="flex flex-col">
+                    <input 
+                        {...register("depositAmount",{
+                            required: "Deposit Amount is required",
+                            min: 0, // Prevent negative numbers
+                        })} 
+                        type="number" 
+                        min="0"
+                        step="0.01"
+                        placeholder="Deposit Amount"
+                        className="input-field"
+                    />
+                    {errors.depositAmount && <div className="px-2 text-[#AB274E] italic text-sm mt-1">{errors.depositAmount.message}</div>}
+                </div>
             </div>
 
             {/* Dates */}
             <div className="grid grid-cols-2 gap-4">
-                <div>
+                <div className="flex flex-col">
                     <label className="block text-sm font-medium text-custom-secondary">Start Date</label>
-                    <input 
+                    {/* <input 
                         {...register("startDate", { 
                             required: true 
                         })} 
                         type="date" 
                         className="input-field" 
+                    /> */}
+                    <Controller
+                        name="startDate"
+                        control={control}
+                        rules={{ required: "Start Date is required" }}
+                        render={({ field }) => (
+                        <DatePicker 
+                            value={field.value} 
+                            onChange={field.onChange} 
+                            placeholder="Start Date" 
+                        />
+                        )}
                     />
+                    {errors.startDate && <div className="px-2 text-[#AB274E] italic text-sm mt-1">{errors.startDate.message}</div>}
                 </div>
-                <div>
+                <div className="flex flex-col">
                     <label className="block text-sm font-medium text-custom-secondary">End Date</label>
-                    <input 
+                    {/* <input 
                         {...register("endDate", { 
                             required: true 
                         })} 
                         type="date"
                         className="input-field" 
+                    /> */}
+                    <Controller
+                        name="endDate"
+                        control={control}
+                        rules={{ required: "End Date is required" }}
+                        render={({ field }) => (
+                        <DatePicker 
+                            value={field.value} 
+                            onChange={field.onChange} 
+                            placeholder="End Date" 
+                        />
+                        )}
                     />
+                    {errors.endDate && <div className="px-2 text-[#AB274E] italic text-sm mt-1">{errors.endDate.message}</div>}
                 </div>
             </div>
 
             {/* Destinations */}
-            <textarea 
-                {...register("destinations", {
-                    required: true,
-                })} 
-                placeholder="Destinations (e.g. California, New York)"
-                className="input-field h-24"
-            />
-
+            <div className="flex flex-col">
+                <textarea 
+                    {...register("destinations", {
+                        required: "Specify Destinations",
+                    })} 
+                    placeholder="Destinations (e.g. California, New York)"
+                    className="input-field h-24"
+                />
+                {errors.destinations && <div className="px-2 text-[#AB274E] italic text-sm mt-1">{errors.destinations.message}</div>}
+            </div>
             {/* Notes */}
             <textarea 
                 {...register("notes")} 
@@ -194,37 +227,42 @@ export default function AddConfirmation ({onClose}: AddConfirmationProps) {
 
             {/* Status & Priority */}
             <div className="grid grid-cols-2 gap-4">
-                <select 
-                    {...register("status", {
-                        required: true, 
-                    })} 
-                    className="input-field"
-                >
-                    <option value="">Select Status</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Confirmed">Confirmed</option>
-                    <option value="Cancelled">Cancelled</option>
-                </select>
-
-                <select 
-                    {...register("priority", { 
-                        required: true, 
-                    })} 
-                    className="input-field"
-                >
-                    <option value="">Select Priority</option>
-                    <option value="High">High</option>
-                    <option value="Medium">Medium</option>
-                    <option value="Low">Low</option>
-                </select>
+                <div className="flex flex-col ">
+                    <select 
+                        {...register("status", {
+                            required: "Select the Status", 
+                        })} 
+                        className="input-field"
+                    >
+                        <option value="">Select Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                    {errors.status && <div className="px-2 text-[#AB274E] italic text-sm mt-1">{errors.status.message}</div>}
+                </div>
+                <div className="flex flex-col">
+                    <select 
+                        {...register("priority", { 
+                            required: "Select the Priority", 
+                        })} 
+                        className="input-field"
+                    >
+                        <option value="">Select Priority</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                    {errors.priority && <div className="px-2 text-[#AB274E] italic text-sm mt-1">{errors.priority.message}</div>}
+                </div>
             </div>
 
             {/* Submit Button */}
             <div className="flex justify-end">
-                <button type="submit" disabled={isSubmitting}
-                    className="px-4 py-2 bg-custom text-background rounded-lg shadow-md hover:bg-custom-secondary disabled:bg-gray-400">
-                    {isSubmitting ? "Adding..." : "Add Confirmation"}
-                </button>
+                <Button size="lg" type="submit" disabled={isSubmitting}
+                    className="px-4 bg-custom text-background rounded-lg shadow-md hover:bg-custom-secondary focus-visible:ring-2 focus-visible:ring-custom disabled:bg-gray-400">
+                    {mutation.isPending ? <div className="w-6 h-6 border-4 border-t-4 border-gray-200 rounded-full animate-spin"></div> : (isSubmitting ? "Adding..." : "Add Confirmation")}
+                </Button>
             </div>
         </form>
 

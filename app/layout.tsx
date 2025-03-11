@@ -6,6 +6,8 @@ import NavBar from "@/components/navbar/Navbar";
 import BreadCrumbs from "@/components/breadcrumbs";
 import QueryProvider from "@/providers/query-provider";
 
+import { Toaster } from "@/components/ui/sonner";
+
 // Set up Roboto font
 const roboto = Roboto({
   weight: ['400', '700'],
@@ -32,6 +34,7 @@ export default function RootLayout({
             <BreadCrumbs/>
           </div>
           {children}
+          <Toaster />
         </QueryProvider>
       </body>
     </html>

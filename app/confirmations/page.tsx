@@ -4,25 +4,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 
 import { DataTable } from "@/components/datatable-components/datatable";
 import { Columns } from "@/app/confirmations/columns";
-import { Confirmation } from "../../types/confirmation";
-
-import { API_ENDPOINTS } from "@/lib/api";
-import { toCamelCase } from "@/lib/utils";
-
-// Fetching Function
-async function fetchConfirmations(): Promise<Confirmation[]> {
-  const response = await fetch(API_ENDPOINTS.CONFIRMATIONS);
-  if (!response.ok) throw new Error("Error fetching data");
-
-  const data = await response.json();
-
-  return data.map((item: any) => ({
-      ...toCamelCase(item),
-      startDate: item.start_date ? new Date(item.start_date) : null,
-      endDate: item.end_date ? new Date(item.end_date) : null,
-  }));
-};
-
+import { fetchConfirmations } from "@/lib/api/confirmations";
 
 export default function Page() {
   // Query Function
@@ -33,8 +15,10 @@ export default function Page() {
   });
 
   if (isLoading) return <p className="flex items-center justify-center mt-10 text-xl text-custom">Loading...</p>;
-  if (error) return <p className="flex items-center justify-center mt-10 text-xl text-custom">Error occured: <span className="italic text-custom-secondary font-extralight">{( error as Error).message}</span></p>;
-  console.log(data);
+  if (error) return <p className="flex items-center justify-center mt-10 text-xl text-custom">
+                      Error occured: <span className="italic text-custom-secondary font-extralight">{( error as Error).message}</span>
+                    </p>;
+  // console.log(data);
   return (
     <section className="mt-2 mx-4">
       {/* <hr className="shadow-sm"/> */}
