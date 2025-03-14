@@ -1,13 +1,14 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, ChevronsUpDown, CircleArrowRight } from "lucide-react";
+import { MoreHorizontal, ChevronsUpDown, CircleArrowRight, Trash2, FilePenLine, CheckCircle, XCircle, Clock, TrendingUp, TrendingDown  } from "lucide-react";
 
 import BasicModal from "@/components/basic-modal";
 import ConfirmationDetails from "./confirmation-details";
-import { Confirmation } from "../../types/confirmation";
+import { Confirmation, priorities } from "../../types/confirmations";
+import { formatDate } from "@/lib/utils";
 
 import Link from "next/link";
 
@@ -20,18 +21,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-
-
-// Custom function to format dates
-export const formatDate = (dateString: string | Date) => {
-  const date = new Date(dateString);
-  return new Intl.DateTimeFormat("en-GB", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  }).format(date);
-};
+import DeleteConfirmation from "./delete-confirmation";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateConfirmation } from "@/lib/api/confirmations";
+import { toast } from "sonner";
 
 
 export const Columns: ColumnDef<Confirmation>[] = [
@@ -88,74 +81,148 @@ export const Columns: ColumnDef<Confirmation>[] = [
     cell: ({ row }) => formatDate(row.original.endDate),
     
   },
-  {
-    header:"Priority",
-    cell: ({ row }) => {
-      type Priority = "High" | "Medium" | "Low";
-
-      const confirmation = row.original;
-      
-      // State to manage priority selection
-      const [priority, setPriority] = useState<Priority>(confirmation.priority as Priority);
-  
-      // Define styles for each priority level
-      const priorityColors = {
-        High : "bg-[#AB274E] hover:bg-[#cf305e] text-white",
-        Medium : "bg-[#E6B467] hover:bg-[#F3C97B] text-black",
-        Low : "bg-custom hover:bg-[#06919e] text-white",
-      };
-  
+  { 
+    accessorKey:"priority",
+    header:({ column }) => {
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button className={`w-24 ${priorityColors[priority] || "bg-gray-300 text-black"}`}>
-              {priority}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
-            <DropdownMenuLabel className="">Priority</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => setPriority("High")}>
-              High 
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setPriority("Medium")}>
-              Medium 
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setPriority("Low")}>
-              Low 
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )  
-    }
+        <Button
+          variant="ghost"
+          className="px-0 hover:bg-transparent"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Priority
+          <ChevronsUpDown className="ml-[1px] h-4 w-4" />
+        </Button>
+      )
+    },
+    // cell: ({ row }) => {
+    //   type Priority = "High" | "Medium" | "Low";
+
+    //   const confirmation = row.original;
+
+    //   // Queryclient to communicate with the page.tsx fetching function and update (used in useMutation function) 
+    //   const queryClient = useQueryClient();
+
+    //   // State to manage priority selection
+    //   const [priority, setPriority] = useState<Priority>(confirmation.priority as Priority);
+  
+    //   // Define styles for each priority level
+    //   const priorityColors = {
+    //     High : "bg-[#AB274E] hover:bg-[#cf305e] text-white",
+    //     Medium : "bg-[#E6B467] hover:bg-[#F3C97B] text-black",
+    //     Low : "bg-custom hover:bg-[#06919e] text-white",
+    //   };
+
+    //   // Update the local 'priority' state whenever the 'confirmation.priority' value changes.
+    //   // This ensures the component state stays in sync with the latest 'confirmation' data.
+    //   useEffect(() => {
+    //     setPriority(confirmation.priority as Priority);
+    //   }, [confirmation.priority]);
+      
+    //   // useMutation for updating priority
+    //   const mutation = useMutation({
+    //     mutationFn: (newPriority: Priority) => updateConfirmation({ ...confirmation, priority: newPriority }),
+        
+    //     // The `onMutate` function runs before the mutation is sent to the server
+    //     onMutate: async (newPriority) => {
+    //       await queryClient.cancelQueries({ queryKey: ["confirmations"] }); // Cancel any ongoing 'confirmations' queries
+      
+    //       // Snapshot the previous data to allow rollback in case of failure
+    //       const previousData = queryClient.getQueryData<Confirmation[]>(["confirmations"]);
+      
+    //       // Optimistically update the UI by modifying the priority of the confirmation in the cache
+    //       queryClient.setQueryData(["confirmations"], (oldData: Confirmation[] | undefined) => {
+    //         return oldData?.map((item) =>
+    //           item.id === confirmation.id ? { ...item, priority: newPriority } : item
+    //         ) || []; // Update the confirmation priority if it matches the id
+    //       });
+      
+    //       return { previousData }; // Return the previous data to roll back if the mutation fails
+    //     },
+
+    //     onError: (err, newPriority, context) => {
+    //       console.error("Failed to update priority:", err);
+    //       queryClient.setQueryData(["confirmations"], context?.previousData); // Rollback on error
+    //       toast( "Something went wrong!", {  
+    //           duration: 4000,
+    //           position: "bottom-right",
+    //           style: { backgroundColor: "#AB274E", color: "white" },
+    //       });
+    //     },
+
+    //     onSettled: () => {
+    //       queryClient.invalidateQueries({queryKey: ["confirmations"]}); // Refetch data
+    //     },
+    //   });
+
+    //   return (
+    //     <DropdownMenu>
+    //       <DropdownMenuTrigger asChild>
+    //         <Button className={`w-20 focus-visible:ring-0 ${priorityColors[priority] || "bg-gray-300 text-black"} transition-none`}>
+    //           {priority}
+    //         </Button>
+    //       </DropdownMenuTrigger>
+    //       <DropdownMenuContent align="start">
+    //         <DropdownMenuLabel className="">Priority</DropdownMenuLabel>
+    //         <DropdownMenuSeparator />
+    //         <DropdownMenuItem
+    //           onClick={() => {
+    //             setPriority("High"); // Immediate UI update
+    //             mutation.mutate("High"); // API call
+    //           }}
+    //         >
+    //           High
+    //         </DropdownMenuItem>
+    //         <DropdownMenuItem
+    //           onClick={() => {
+    //             setPriority("Medium");
+    //             mutation.mutate("Medium");
+    //           }}
+    //         >
+    //           Medium
+    //         </DropdownMenuItem>
+    //         <DropdownMenuItem
+    //           onClick={() => {
+    //             setPriority("Low");
+    //             mutation.mutate("Low");
+    //           }}
+    //         >
+    //           Low
+    //         </DropdownMenuItem>
+    //       </DropdownMenuContent>
+    //     </DropdownMenu>
+    //   )  
+    // }
   },
   {
+    accessorKey:"status",
     header: "Status",
-    cell: ({row}) => {
-      type Status = "Confirmed" | "Pending" | "Cancelled";
-
-      const status = row.original.status as Status;
-
-      // Define styles for each status
-      const statusColors = {
-        Cancelled : "text-[#AB274E]",
-        Pending : "text-[#E6B467]",
-        Confirmed : "text-custom",
-      };
-
-      return (
-        <span className={`${statusColors[status]}`}>
-          {status}
-        </span>
-      );
-    },
+    // cell: ({ row }) => {
+    //   type Status = "Confirmed" | "Pending" | "Cancelled";
+  
+    //   const status = row.original.status as Status;
+  
+    //   const statusConfig = {
+    //     Cancelled: { color: "text-[#AB274E]", icon: <XCircle className="w-4 h-4 text-[#AB274E]" /> },
+    //     Pending: { color: "text-[#E6B467]", icon: <Clock className="w-4 h-4 text-[#E6B467]" /> },
+    //     Confirmed: { color: "text-custom", icon: <CheckCircle className="w-4 h-4 text-custom" /> },
+    //   };
+  
+    //   return (
+    //     <span className={`flex items-center gap-2 ${statusConfig[status].color}`}>
+    //       {statusConfig[status].icon}
+    //       {status}
+    //     </span>
+    //   );
+    // },
   },
   {
     id: "actions",
     cell: ({ row }) => {
       const confirmation = row.original;
       
-      const [isModalOpen, setIsModalOpen] = useState(false);
+      const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false); // State for View Confirmation Details
+      const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // State for Deleting a Confirmation
 
       return (
         <>
@@ -173,13 +240,20 @@ export const Columns: ColumnDef<Confirmation>[] = [
               Copy Confirmation ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => setIsModalOpen((prev) => !prev)}>View Confirmation Details</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setIsDetailsModalOpen((prev) => !prev)}><FilePenLine/>View</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setIsDeleteModalOpen((prev) => !prev)}><Trash2 />Delete</DropdownMenuItem>
             <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <BasicModal isOpen={isModalOpen} onClose={() => setIsModalOpen((prev) => !prev)} title={"Confirmation Details"}>
+        {/* View/Edit Modal */}
+        <BasicModal isOpen={isDetailsModalOpen} onClose={() => setIsDetailsModalOpen((prev) => !prev)} title={"Confirmation Details"}>
           <ConfirmationDetails confirmation={confirmation}></ConfirmationDetails>
+        </BasicModal>
+
+        {/* Delete Modal */}
+        <BasicModal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen((prev) => !prev)} title={""}>
+          <DeleteConfirmation confirmationId={confirmation.id} onClose={() => setIsDeleteModalOpen((prev) => !prev)}></DeleteConfirmation>
         </BasicModal>
         </>
       )

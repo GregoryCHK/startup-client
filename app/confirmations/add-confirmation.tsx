@@ -1,10 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 
-import { API_ENDPOINTS } from "@/lib/api";
 import { addConfirmation } from "@/lib/api/confirmations";
-import { serializeToSnakeCase, cn } from "@/lib/utils";
-import { Confirmation } from "../../types/confirmation";
+import { Confirmation } from "../../types/confirmations";
 
 import DatePicker from "@/components/date-picker";
 import { Button } from "@/components/ui/button";
@@ -29,7 +27,7 @@ export default function AddConfirmation ({onClose}: AddConfirmationProps) {
     const queryclient = useQueryClient();
 
     // Use useMutation hook for the POST request
-    const mutation = useMutation({
+    const addMutation = useMutation({
         mutationFn: addConfirmation,
         onSuccess: (data) => {
             queryclient.invalidateQueries({queryKey: ["confirmations"]}); // Rerenders the confirmations using the querykey initializes in pages.tsx
@@ -52,7 +50,7 @@ export default function AddConfirmation ({onClose}: AddConfirmationProps) {
 
     const onSubmit: SubmitHandler<Omit<Confirmation, "id">> = async (data) => {
         try {
-            await mutation.mutateAsync(data);  // Trigger the mutation
+            await addMutation.mutateAsync(data);  // Trigger the mutation
             onClose();
         } catch (error) {
             // console.error("Error during submission:", error);
@@ -63,7 +61,7 @@ export default function AddConfirmation ({onClose}: AddConfirmationProps) {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-6  mx-auto space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="bg-white px-6 pt-6  mx-auto space-y-4">
             {/* Name, Email, Contact */}
             <div className="grid grid-cols-3 gap-4">
                 {/* Name Field */}
@@ -161,6 +159,7 @@ export default function AddConfirmation ({onClose}: AddConfirmationProps) {
                             value={field.value} 
                             onChange={field.onChange} 
                             placeholder="Start Date" 
+                            readOnly={false}
                         />
                         )}
                     />
@@ -184,6 +183,7 @@ export default function AddConfirmation ({onClose}: AddConfirmationProps) {
                             value={field.value} 
                             onChange={field.onChange} 
                             placeholder="End Date" 
+                            readOnly={false}
                         />
                         )}
                     />
@@ -258,10 +258,10 @@ export default function AddConfirmation ({onClose}: AddConfirmationProps) {
             </div>
 
             {/* Submit Button */}
-            <div className="flex justify-end">
+            <div className="flex justify-end pt-4">
                 <Button size="lg" type="submit" disabled={isSubmitting}
                     className="px-4 bg-custom text-background rounded-lg shadow-md hover:bg-custom-secondary focus-visible:ring-2 focus-visible:ring-custom disabled:bg-gray-400">
-                    {mutation.isPending ? <div className="w-6 h-6 border-4 border-t-4 border-gray-200 rounded-full animate-spin"></div> : (isSubmitting ? "Adding..." : "Add Confirmation")}
+                    {addMutation.isPending ? <div className="w-6 h-6 border-4 border-t-4 border-gray-200 rounded-full animate-spin"></div> : (isSubmitting ? "Adding..." : "Add Confirmation")}
                 </Button>
             </div>
         </form>
