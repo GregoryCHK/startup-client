@@ -9,7 +9,7 @@ import {
   PopoverTrigger
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
-import { Check, CirclePlus } from "lucide-react";
+import { Check, CirclePlus, Search } from "lucide-react";
 import { Input } from "../ui/input";
 
 interface DataTableFacetedFilterProps<TData, TValue> {
@@ -81,15 +81,19 @@ export function DataTableFacetedFilter<TData, TValue>({
       </PopoverTrigger>
 
       <PopoverContent className="w-[200px] p-0" align="start">
-        <div className="p-2">
+        <div className="pt-2">
+          <div className="flex items-center pb-2 border-b">
+          <Search className="ml-4 text-foreground/50" />
           <Input
             placeholder="Search..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="mb-2 w-full"
+            className="pl-2 w-full rounded-none border-none shadow-none focus-visible:ring-0"
           />
-          <div className="space-y-2">
-            {options.map((option) => {
+          </div>
+          <div className="p-2 space-y-2">
+            {/* Use filteredOptions instead of options */}
+            {filteredOptions.map((option) => {
               const isSelected = selectedValue === option.value;
 
               const count = facets?.get(option.value.charAt(0).toUpperCase() + option.value.slice(1)) || 0;
@@ -128,12 +132,12 @@ export function DataTableFacetedFilter<TData, TValue>({
             })}
           </div>
           {selectedValue && (
-            <div className="mt-2">
+            <div className="mt-2 p-1 border-t">
               <Button
-                variant="outline"
+                variant="ghost"
                 size="sm"
                 onClick={handleResetFilter}
-                className="w-full"
+                className="w-full rounded-none "
               >
                 Reset Filter
               </Button>

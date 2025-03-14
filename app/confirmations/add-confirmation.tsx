@@ -2,7 +2,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 
 import { addConfirmation } from "@/lib/api/confirmations";
-import { Confirmation } from "../../types/confirmations";
+import { Confirmation, status, priorities } from "../../types/confirmations";
+
 
 import DatePicker from "@/components/date-picker";
 import { Button } from "@/components/ui/button";
@@ -235,9 +236,11 @@ export default function AddConfirmation ({onClose}: AddConfirmationProps) {
                         className="input-field"
                     >
                         <option value="">Select Status</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Confirmed">Confirmed</option>
-                        <option value="Cancelled">Cancelled</option>
+                        {status.map((item) => (
+                            <option key={item.value} value={item.value}>
+                            {item.label}
+                            </option>
+                        ))}
                     </select>
                     {errors.status && <div className="px-2 text-[#AB274E] italic text-sm mt-1">{errors.status.message}</div>}
                 </div>
@@ -249,9 +252,11 @@ export default function AddConfirmation ({onClose}: AddConfirmationProps) {
                         className="input-field"
                     >
                         <option value="">Select Priority</option>
-                        <option value="High">High</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Low">Low</option>
+                        {priorities.map((item) => (
+                            <option key={item.value} value={item.value}>
+                            {item.label}
+                            </option>
+                        ))}
                     </select>
                     {errors.priority && <div className="px-2 text-[#AB274E] italic text-sm mt-1">{errors.priority.message}</div>}
                 </div>

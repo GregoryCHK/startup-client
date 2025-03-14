@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, ChevronsUpDown, CircleArrowRight, Trash2, FilePenLine, CheckCircle, XCircle, Clock, TrendingUp, TrendingDown  } from "lucide-react";
+import { MoreHorizontal, ChevronsUpDown, CircleArrowRight, Trash2, FilePenLine, CheckCircle, XCircle, Clock, TrendingUp, TrendingDown, Timer  } from "lucide-react";
 
 import BasicModal from "@/components/basic-modal";
 import ConfirmationDetails from "./confirmation-details";
-import { Confirmation, priorities } from "../../types/confirmations";
+import { Confirmation, priorities, status } from "../../types/confirmations";
 import { formatDate } from "@/lib/utils";
 
 import Link from "next/link";
@@ -95,126 +95,126 @@ export const Columns: ColumnDef<Confirmation>[] = [
         </Button>
       )
     },
-    // cell: ({ row }) => {
-    //   type Priority = "High" | "Medium" | "Low";
+    cell: ({ row }) => {
+      type Priority = "High" | "Medium" | "Low";
 
-    //   const confirmation = row.original;
+      const confirmation = row.original;
 
-    //   // Queryclient to communicate with the page.tsx fetching function and update (used in useMutation function) 
-    //   const queryClient = useQueryClient();
+      // Queryclient to communicate with the page.tsx fetching function and update (used in useMutation function) 
+      const queryClient = useQueryClient();
 
-    //   // State to manage priority selection
-    //   const [priority, setPriority] = useState<Priority>(confirmation.priority as Priority);
+      // State to manage priority selection
+      const [priority, setPriority] = useState<Priority>(confirmation.priority as Priority);
   
-    //   // Define styles for each priority level
-    //   const priorityColors = {
-    //     High : "bg-[#AB274E] hover:bg-[#cf305e] text-white",
-    //     Medium : "bg-[#E6B467] hover:bg-[#F3C97B] text-black",
-    //     Low : "bg-custom hover:bg-[#06919e] text-white",
-    //   };
+      // Define styles for each priority level
+      const priorityColors = {
+        High : "bg-[#AB274E] hover:bg-[#cf305e] text-white",
+        Medium : "bg-[#E6B467] hover:bg-[#F3C97B] text-black",
+        Low : "bg-custom hover:bg-[#06919e] text-white",
+      };
 
-    //   // Update the local 'priority' state whenever the 'confirmation.priority' value changes.
-    //   // This ensures the component state stays in sync with the latest 'confirmation' data.
-    //   useEffect(() => {
-    //     setPriority(confirmation.priority as Priority);
-    //   }, [confirmation.priority]);
+      // Update the local 'priority' state whenever the 'confirmation.priority' value changes.
+      // This ensures the component state stays in sync with the latest 'confirmation' data.
+      useEffect(() => {
+        setPriority(confirmation.priority as Priority);
+      }, [confirmation.priority]);
       
-    //   // useMutation for updating priority
-    //   const mutation = useMutation({
-    //     mutationFn: (newPriority: Priority) => updateConfirmation({ ...confirmation, priority: newPriority }),
+      // useMutation for updating priority
+      const mutation = useMutation({
+        mutationFn: (newPriority: Priority) => updateConfirmation({ ...confirmation, priority: newPriority }),
         
-    //     // The `onMutate` function runs before the mutation is sent to the server
-    //     onMutate: async (newPriority) => {
-    //       await queryClient.cancelQueries({ queryKey: ["confirmations"] }); // Cancel any ongoing 'confirmations' queries
+        // The `onMutate` function runs before the mutation is sent to the server
+        onMutate: async (newPriority) => {
+          await queryClient.cancelQueries({ queryKey: ["confirmations"] }); // Cancel any ongoing 'confirmations' queries
       
-    //       // Snapshot the previous data to allow rollback in case of failure
-    //       const previousData = queryClient.getQueryData<Confirmation[]>(["confirmations"]);
+          // Snapshot the previous data to allow rollback in case of failure
+          const previousData = queryClient.getQueryData<Confirmation[]>(["confirmations"]);
       
-    //       // Optimistically update the UI by modifying the priority of the confirmation in the cache
-    //       queryClient.setQueryData(["confirmations"], (oldData: Confirmation[] | undefined) => {
-    //         return oldData?.map((item) =>
-    //           item.id === confirmation.id ? { ...item, priority: newPriority } : item
-    //         ) || []; // Update the confirmation priority if it matches the id
-    //       });
+          // Optimistically update the UI by modifying the priority of the confirmation in the cache
+          queryClient.setQueryData(["confirmations"], (oldData: Confirmation[] | undefined) => {
+            return oldData?.map((item) =>
+              item.id === confirmation.id ? { ...item, priority: newPriority } : item
+            ) || []; // Update the confirmation priority if it matches the id
+          });
       
-    //       return { previousData }; // Return the previous data to roll back if the mutation fails
-    //     },
+          return { previousData }; // Return the previous data to roll back if the mutation fails
+        },
 
-    //     onError: (err, newPriority, context) => {
-    //       console.error("Failed to update priority:", err);
-    //       queryClient.setQueryData(["confirmations"], context?.previousData); // Rollback on error
-    //       toast( "Something went wrong!", {  
-    //           duration: 4000,
-    //           position: "bottom-right",
-    //           style: { backgroundColor: "#AB274E", color: "white" },
-    //       });
-    //     },
+        onError: (err, newPriority, context) => {
+          console.error("Failed to update priority:", err);
+          queryClient.setQueryData(["confirmations"], context?.previousData); // Rollback on error
+          toast( "Something went wrong!", {  
+              duration: 4000,
+              position: "bottom-right",
+              style: { backgroundColor: "#AB274E", color: "white" },
+          });
+        },
 
-    //     onSettled: () => {
-    //       queryClient.invalidateQueries({queryKey: ["confirmations"]}); // Refetch data
-    //     },
-    //   });
+        onSettled: () => {
+          queryClient.invalidateQueries({queryKey: ["confirmations"]}); // Refetch data
+        },
+      });
 
-    //   return (
-    //     <DropdownMenu>
-    //       <DropdownMenuTrigger asChild>
-    //         <Button className={`w-20 focus-visible:ring-0 ${priorityColors[priority] || "bg-gray-300 text-black"} transition-none`}>
-    //           {priority}
-    //         </Button>
-    //       </DropdownMenuTrigger>
-    //       <DropdownMenuContent align="start">
-    //         <DropdownMenuLabel className="">Priority</DropdownMenuLabel>
-    //         <DropdownMenuSeparator />
-    //         <DropdownMenuItem
-    //           onClick={() => {
-    //             setPriority("High"); // Immediate UI update
-    //             mutation.mutate("High"); // API call
-    //           }}
-    //         >
-    //           High
-    //         </DropdownMenuItem>
-    //         <DropdownMenuItem
-    //           onClick={() => {
-    //             setPriority("Medium");
-    //             mutation.mutate("Medium");
-    //           }}
-    //         >
-    //           Medium
-    //         </DropdownMenuItem>
-    //         <DropdownMenuItem
-    //           onClick={() => {
-    //             setPriority("Low");
-    //             mutation.mutate("Low");
-    //           }}
-    //         >
-    //           Low
-    //         </DropdownMenuItem>
-    //       </DropdownMenuContent>
-    //     </DropdownMenu>
-    //   )  
-    // }
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button className={`w-20 focus-visible:ring-0 ${priorityColors[priority] || "bg-gray-300 text-black"} transition-none`}>
+              {priority}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            <DropdownMenuLabel className="">Priority</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => {
+                setPriority("High"); // Immediate UI update
+                mutation.mutate("High"); // API call
+              }}
+            >
+              High
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                setPriority("Medium");
+                mutation.mutate("Medium");
+              }}
+            >
+              Medium
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                setPriority("Low");
+                mutation.mutate("Low");
+              }}
+            >
+              Low
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )  
+    }
   },
   {
     accessorKey:"status",
     header: "Status",
-    // cell: ({ row }) => {
-    //   type Status = "Confirmed" | "Pending" | "Cancelled";
-  
-    //   const status = row.original.status as Status;
-  
-    //   const statusConfig = {
-    //     Cancelled: { color: "text-[#AB274E]", icon: <XCircle className="w-4 h-4 text-[#AB274E]" /> },
-    //     Pending: { color: "text-[#E6B467]", icon: <Clock className="w-4 h-4 text-[#E6B467]" /> },
-    //     Confirmed: { color: "text-custom", icon: <CheckCircle className="w-4 h-4 text-custom" /> },
-    //   };
-  
-    //   return (
-    //     <span className={`flex items-center gap-2 ${statusConfig[status].color}`}>
-    //       {statusConfig[status].icon}
-    //       {status}
-    //     </span>
-    //   );
-    // },
+    cell: ({ row }) => {
+      const statusValue = row.original.status as string; // Get the status value (it's a string)
+    
+      // Find the status configuration that matches the value
+      const statusConfig = status.find((s) => s.value === statusValue);
+
+      if (!statusConfig) {
+        // If no matching statusConfig is found, return a default or null value
+        return <span>Unknown Status</span>; // You can return something else here if you prefer
+      }
+
+      return (
+        <span className={`flex items-center gap-2 ${statusConfig.color}`}>
+          <statusConfig.icon className={`w-4 h-4 ${statusConfig.color}`} />
+          {statusConfig.label}
+        </span>
+      );
+    },
   },
   {
     id: "actions",
@@ -262,7 +262,7 @@ export const Columns: ColumnDef<Confirmation>[] = [
   {
     id: "info",
     header: "",
-    cell: ({ row }) => {
+    cell: () => {
       return(
         <Link className="flex justify-center p-2" href={''}>
           <CircleArrowRight className="h-5 w-5" strokeWidth={1.5}/>

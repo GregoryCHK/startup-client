@@ -1,7 +1,7 @@
 // This type is used to define the shape of the data.
 // You can use a Zod schema here if you want.
 
-import { CircleCheck, X, Timer, Plus, XCircle, ArrowDown, ArrowUp, ArrowRight} from 'lucide-react';
+import { CircleCheck, Timer, XCircle, ArrowDown, ArrowUp, ArrowRight, ClockAlert} from 'lucide-react';
 
 export type Confirmation = {
   id: number;
@@ -22,36 +22,48 @@ export type Confirmation = {
 
 export const priorities = [
   {
-    value: "high",
+    value: "High",
     label: "High",
-    icon: ArrowUp
+    icon: ArrowUp,
+    color: "bg-[#AB274E] hover:bg-[#cf305e] text-white"
   },
   {
-    value: "medium",
+    value: "Medium",
     label: "Medium",
-    icon: ArrowRight
+    icon: ArrowRight,
+    color: "bg-[#E6B467] hover:bg-[#F3C97B] text-black"
   },
   {
-    value: "low",
+    value: "Low",
     label: "Low",
-    icon: ArrowDown
+    icon: ArrowDown,
+    color: "bg-custom hover:bg-[#06919e] text-white"
   },
 ];
 
 export const status = [
   {
-    value: "confirmed",
-    label: "Confirmed",
-    icon: CircleCheck
+    value: "Done",
+    label: "Done",
+    icon: CircleCheck,
+    color: "text-custom" // color for the Done status
   },
   {
-    value: "pending",
-    label: "Pending",
-    icon: Timer
+    value: "In Progress",
+    label: "In Progress",
+    icon: Timer,
+    color: "text-[#E6B467]" // color for In Progress
   },
   {
-    value: "cancelled",
+    value: "Cancelled",
     label: "Cancelled",
-    icon: XCircle
+    icon: XCircle,
+    color: "text-[#AB274E]" // color for Cancelled
+  },
+  {
+    value: "Postponed",
+    label: "Postponed",
+    icon: ClockAlert,
+    color: "text-foreground/50" // color for Postponed
   },
 ];

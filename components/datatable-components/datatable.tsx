@@ -38,24 +38,23 @@ interface DataTableProps<TData, TValue> {
   enableToolBar?: boolean;
 }
 
-// Function to highlight text when matching with the search
-function highlightText(text: string, query: string) {
-  if (!query) return text;
+// Function to highlight text when matching with the search TODO: DOESNT WORK NEED TO WATCH IT LATER
+// function highlightText(text: string, query: string) {
+//   if (!query) return text;
 
-  const regex = new RegExp(`(${query})`, "gi");
-  const parts = text.split(regex);
+//   const regex = new RegExp(`(${query})`, "gi");
+//   const parts = text.split(regex);
 
-  return parts.map((part, index) =>
-    regex.test(part) ? (
-      <span key={index} className="bg-custom-secondary">
-        {part}
-      </span>
-    ) : (
-      part
-    )
-  );
-}
-
+//   return parts.map((part, index) =>
+//     regex.test(part) ? (
+//       <span key={index} className="bg-custom-secondary">
+//         {part}
+//       </span>
+//     ) : (
+//       part
+//     )
+//   );
+// };
 
 export function DataTable<TData, TValue>({columns, data, enablePagination=true, enableScroll=true, enableToolBar=true}: DataTableProps<TData, TValue>) {
 
@@ -130,16 +129,9 @@ export function DataTable<TData, TValue>({columns, data, enablePagination=true, 
                     data-state={row.getIsSelected() && "selected"}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="px-4 py-2 [&:last-child]:h-full [&:last-child]:border-l [&:last-child]:px-0 [&:last-child]:py-0">
-                        {typeof cell.getValue() === "string" ? (
-                          highlightText(cell.getValue() as string, searchValue)
-                        ) : (
-                          flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )
-                        )}
-                      </TableCell>
+                      <TableCell key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
                     ))}
                   </TableRow>
                 ))

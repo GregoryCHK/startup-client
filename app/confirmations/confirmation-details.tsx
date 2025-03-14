@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { Confirmation } from '@/types/confirmations';
+import { Confirmation, status, priorities } from '@/types/confirmations';
 import { formatDate } from '@/lib/utils';
 import { updateConfirmation } from '@/lib/api/confirmations';
 import DatePicker from '@/components/date-picker';
@@ -68,7 +68,7 @@ export default function ConfirmationDetails({confirmation}: ConfirmationProps) {
   };
 
   return (
-    <div className="bg-white px-6 pt-6 mx-auto space-y-4">
+    <div className="bg-white px-6 pt-6 mx-auto space-y-4 rounded-md">
       {/* Name, Email, Contact */}
       <div className="grid grid-cols-3 gap-4">
         {/* Name Field */}
@@ -268,10 +268,12 @@ export default function ConfirmationDetails({confirmation}: ConfirmationProps) {
               className="input-field"
               disabled={!isEditing}
           >
-              <option value="">Select Status</option>
-              <option value="Pending">Pending</option>
-              <option value="Confirmed">Confirmed</option>
-              <option value="Cancelled">Cancelled</option>
+              {/* <option value="">Select Status</option> */}
+              {status.map((item) => (
+                  <option key={item.value} value={item.value}>
+                  {item.label}
+                  </option>
+              ))}
           </select>
           {errors.status && <div className="px-2 text-[#AB274E] italic text-sm mt-1">{errors.status.message}</div>}
         </div>
@@ -284,38 +286,41 @@ export default function ConfirmationDetails({confirmation}: ConfirmationProps) {
               className="input-field"
               disabled={!isEditing}
           >
-              <option value="">Select Priority</option>
-              <option value="High">High</option>
-              <option value="Medium">Medium</option>
-              <option value="Low">Low</option>
+              {/* <option value="">Select Priority</option> */}
+              {priorities.map((item) => (
+                  <option key={item.value} value={item.value}>
+                  {item.label}
+                  </option>
+              ))}
           </select>
           {errors.priority && <div className="px-2 text-[#AB274E] italic text-sm mt-1">{errors.priority.message}</div>}
         </div>
       </div>
 
-        {/* Edit Button */}
-        <div className="col-span-2 flex justify-end pt-4">
-          {isEditing ? (
-            <>
-              <div className="flex justify-center items-center gap-6">
-              <Button
-                size="lg"
-                onClick={handleSubmit(onSubmit)} // Use handleSubmit to trigger form validation and mutation
-                className="px-4  flex gap-3 text-center bg-[#AB274E] text-background rounded-lg shadow-md hover:bg-custom-secondary focus-visible:ring-2 focus-visible:ring-custom"
-                disabled={isSubmitting} // Disable button while submitting
-              >
-                {isSubmitting ? 'Saving...' : 'Save Changes'}
-              </Button>
-              {/* Cancel Edit Mode */}
-              <Button size="lg" className="text-md" variant="outline" onClick={() => setIsEditing((prev) => !prev)} disabled={isSubmitting}>Cancel</Button>
-              </div>
-            </>
-          ) : (
-            <Button size="lg" onClick={() => setIsEditing((prev) => !prev) } className="px-4  flex gap-3 text-center bg-custom text-background rounded-lg shadow-md hover:bg-custom-secondary focus-visible:ring-2 focus-visible:ring-custom">
-              <Pencil/> Edit
+      {/* Edit Button */}
+      <div className="col-span-2 flex justify-end pt-4">
+        {isEditing? <span className='absolute left-10 py-2 px-4 rounded-md italic font-bold text-[#AB274E]'>Edit Mode</span>: ""}
+        {isEditing ? (
+          <>
+            <div className="flex justify-center items-center gap-6">
+            <Button
+              size="lg"
+              onClick={handleSubmit(onSubmit)} // Use handleSubmit to trigger form validation and mutation
+              className="px-4  flex gap-3 text-center bg-[#AB274E] text-background rounded-lg shadow-md hover:bg-custom-secondary focus-visible:ring-2 focus-visible:ring-custom"
+              disabled={isSubmitting} // Disable button while submitting
+            >
+              {isSubmitting ? 'Saving...' : 'Save Changes'}
             </Button>
-          )}
-        </div>
+            {/* Cancel Edit Mode */}
+            <Button size="lg" className="text-md" variant="outline" onClick={() => setIsEditing((prev) => !prev)} disabled={isSubmitting}>Cancel</Button>
+            </div>
+          </>
+        ) : (
+          <Button size="lg" onClick={() => setIsEditing((prev) => !prev) } className="px-4  flex gap-3 text-center bg-custom text-background rounded-lg shadow-md hover:bg-custom-secondary focus-visible:ring-2 focus-visible:ring-custom">
+            <Pencil/> Edit
+          </Button>
+        )}
+      </div>
     </div>
   )
 };

@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { ColumnsView } from './columns-view'; 
 import BasicModal from '../basic-modal';
 import AddConfirmation from '@/app/confirmations/add-confirmation';
-import { DataTableFacetedFilter } from './faceted-filter';
+import { DataTableFacetedFilter } from './datatabel-faceted-filter';
 import { priorities, status } from '@/types/confirmations';
 
 import { Input } from '../ui/input';
@@ -39,7 +39,7 @@ export function DataTableToolBar<TData>({table, searchValue, setSearchValue} : D
             setSearchValue(event.target.value);
             table.setGlobalFilter(event.target.value); // Use global filtering
           }}
-          className="w-[16rem]"
+          className="w-[16rem] transition-none"
         />
         {/* Filters */}
         {table.getColumn("priority") && (

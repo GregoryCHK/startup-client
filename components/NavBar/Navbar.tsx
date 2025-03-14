@@ -1,7 +1,10 @@
-import Link from 'next/link'
-import {Calendar, CheckSquare} from 'lucide-react'
+import React from 'react';
+import Link from 'next/link';
 
 import UserButton from "@/components/navbar/user-button";
+import { Separator } from '../ui/separator';
+
+import {Calendar, CheckSquare} from 'lucide-react';
 
 type MenuItem = {
     name: string;
@@ -24,11 +27,17 @@ function NavBar() {
                     Logo
                 </Link>
                 <div className="hidden md:flex items-center h-full">
-                    {menuitmes.map((item)=>(
-                        <Link key={item.name} href={item.href} 
-                        className='menulinks'>
+                    {menuitmes.map((item, index) => (
+                        <React.Fragment key={item.name}>
+                        <Link href={item.href} className="menulinks">
                             {item.name}
                         </Link>
+
+                        {/* Add a separator after each link except the last one */}
+                        {index < menuitmes.length - 1 && (
+                            <Separator orientation="vertical" className="text-for mx-2 h-4" />
+                        )}
+                        </React.Fragment>
                     ))}
                 </div>
                 <div className='flex items-center space-x-3'>
