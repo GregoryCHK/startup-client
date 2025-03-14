@@ -14,15 +14,18 @@ function BasicModal({isOpen, onClose, title, children} : BasicModalProps) {
 
   return (
     <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50' onClick={onClose}>
-        <div className={`bg-background rounded-lg px-4 py-6 shadow-lg min-w-[60%] relative transition-all ${isOpen ? "scale-100 opacitiy-100" : "scale-125 opacity-0"}`} onClick={(e) => e.stopPropagation()}>
+        <div className={`bg-background rounded-lg px-4 py-6 shadow-lg ${title? "min-w-[60%]" : "min-w-auto"} relative transition-all ${isOpen ? "scale-100 opacitiy-100" : "scale-125 opacity-0"}`} onClick={(e) => e.stopPropagation()}>
             <h2 className='text-center font-bold  text-custom-secondary'>{title}</h2>
             {children}
 
-            <div className="absolute top-3 right-3 ">
-                <Button size="sm" variant="ghost" className='shadow-none text-foreground/50' onClick={onClose}>
-                    <X/>
-                </Button>
-            </div>
+            {/* if there is a title then display the X button, if not its probably something like a delete alert so not needed */}
+            {title && (
+                <div className="absolute top-3 right-3 ">
+                    <Button size="sm" variant="ghost" className='shadow-none text-foreground/50' onClick={onClose}>
+                        <X/>
+                    </Button>
+                </div>
+            )}    
             {/* <div className="mt-6 flex justify-center ">
                 <button className="bg-custom-secondary hover:bg-custom text-white px-4 py-1 rounded-2xl w-[50%]" onClick={onClose}>
                     Close

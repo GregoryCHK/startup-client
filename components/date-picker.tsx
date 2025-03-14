@@ -12,7 +12,7 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { useState } from "react";
 
-export default function DatePicker({ value, onChange, placeholder }: { value?: Date; onChange: (date?: Date) => void; placeholder: string }) {
+export default function DatePicker({ value, onChange, placeholder, readOnly, }: { value?: Date; onChange: (date?: Date) => void; placeholder: string; readOnly: boolean; }) {
   const [open, setOpen] = useState(false); // State to control popover visibility
 
   return (
@@ -24,22 +24,25 @@ export default function DatePicker({ value, onChange, placeholder }: { value?: D
             "w-full h-auto justify-start text-left font-normal focus:ring-custom focus:ring-2",
             !value && "text-muted-foreground"
           )}
+          disabled={readOnly}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {value ? format(value, "dd MMM yy") : <span>{placeholder}</span>}
+          {value ? format(value, "dd MMM yy") : <span className={readOnly ? "text-foreground" : ""}>{placeholder}</span>}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
-        <Calendar
-          mode="single"
-          selected={value}
-          onSelect={(date) => {
-            onChange(date);
-            setOpen(false); // Close the popover when a date is selected
-          }}
-          initialFocus
-        />
-      </PopoverContent>
+      {!readOnly && ( // Only show the calendar when not in read-only mode
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar
+            mode="single"
+            selected={value}
+            onSelect={(date) => {
+              onChange(date);
+              setOpen(false); // Close the popover when a date is selected
+            }}
+            initialFocus
+          />
+        </PopoverContent>
+      )}
     </Popover>
   );
 }
