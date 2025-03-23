@@ -6,13 +6,14 @@ import { useState } from 'react';
 import { ColumnsView } from './columns-view'; 
 import BasicModal from '../basic-modal';
 import AddConfirmation from '@/app/confirmations/add-confirmation';
-import { DataTableFacetedFilter } from './datatabel-faceted-filter';
+import { DataTableFacetedFilter } from './datatable-faceted-filter';
 import { priorities, status } from '@/types/confirmations';
 
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 
 import { Plus, X } from 'lucide-react';
+import { CsvExportButton } from './csv-export-button';
 
 
 interface DataTableToolBarProps<TData>{
@@ -78,6 +79,8 @@ export function DataTableToolBar<TData>({table, searchValue, setSearchValue} : D
         <div>
           <ColumnsView table={table}/>
         </div>
+        {/* Download CSV Button */}
+        <CsvExportButton table={table} filename="confirmations"/>
       </div>
     </div>
     
