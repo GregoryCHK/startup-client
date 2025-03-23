@@ -79,7 +79,7 @@ export default function ConfirmationDetails({confirmation}: ConfirmationProps) {
                   required: "Name is required" 
               })} 
               type="text" 
-              placeholder="Name"
+              placeholder="Full Name"
               className="input-field"
               readOnly={!isEditing}
           />

@@ -47,6 +47,17 @@ export const fetchConfirmations = async (): Promise<Confirmation[]> => {
   return data.map(deserializeToCamelCase);
 };
 
+// Fetch a single confirmation by ID function
+export const fetchConfirmationById = async (id: string): Promise<Confirmation> => {
+  const response = await fetch(`${API_ENDPOINTS.CONFIRMATIONS}${id}/`);
+
+  if (!response.ok) throw new Error("Error fetching confirmation");
+
+  const data = await response.json();
+
+  return deserializeToCamelCase(data) as Confirmation; // ✅ Explicitly cast the result
+};
+
 // Deleting Confirmation Function
 export const deleteConfirmation = async (confirmationId: number) => {
     const response = await fetch(`${API_ENDPOINTS.CONFIRMATIONS}${confirmationId}/`, {

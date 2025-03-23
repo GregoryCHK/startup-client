@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import { DataTable } from "@/components/datatable-components/datatable";
 import { Columns } from "@/app/confirmations/columns";

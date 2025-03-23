@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, ChevronsUpDown, CircleArrowRight, Trash2, FilePenLine, CheckCircle, XCircle, Clock, TrendingUp, TrendingDown, Timer  } from "lucide-react";
+import { MoreHorizontal, ChevronsUpDown, CircleArrowRight, Trash2, FilePenLine, RotateCwSquare } from "lucide-react";
 
 import BasicModal from "@/components/basic-modal";
 import ConfirmationDetails from "./confirmation-details";
@@ -33,6 +33,7 @@ export const Columns: ColumnDef<Confirmation>[] = [
     header: ({ column }) => {
       return (
         <Button
+          id="channel_button"
           variant="ghost"
           className="px-0 hover:bg-transparent"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
@@ -64,6 +65,7 @@ export const Columns: ColumnDef<Confirmation>[] = [
     header: ({ column }) => {
       return (
         <Button
+          id="startDate_button"
           variant="ghost"
           className="px-0 hover:bg-transparent"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
@@ -86,6 +88,7 @@ export const Columns: ColumnDef<Confirmation>[] = [
     header:({ column }) => {
       return (
         <Button
+          id="priority_button"
           variant="ghost"
           className="px-0 hover:bg-transparent"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
@@ -262,9 +265,12 @@ export const Columns: ColumnDef<Confirmation>[] = [
   {
     id: "info",
     header: "",
-    cell: () => {
+    cell: ({row}) => {
+      const confirmationId = row.original.id;
+      const confirmationName = row.original.name; // Passed in the breadcrumb
+
       return(
-        <Link className="flex justify-center p-2" href={''}>
+        <Link className="flex justify-center p-2" href={`/confirmations/${confirmationId}?confirmationName=${encodeURIComponent(confirmationName)}`}>
           <CircleArrowRight className="h-5 w-5" strokeWidth={1.5}/>
         </Link>
       )

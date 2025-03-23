@@ -72,7 +72,7 @@ export default function AddConfirmation ({onClose}: AddConfirmationProps) {
                             required: "Name is required" 
                         })} 
                         type="text" 
-                        placeholder="Name"
+                        placeholder="Full Name"
                         className="input-field"
                     />
                     {errors.name && <div className="px-2 text-[#AB274E] italic text-sm mt-1">{errors.name.message}</div>}
