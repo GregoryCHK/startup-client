@@ -52,7 +52,7 @@ export const status = [
     value: "In Progress",
     label: "In Progress",
     icon: Timer,
-    color: "text-[#f3c97b]" // color for In Progress
+    color: "text-[#F3C97B]" // color for In Progress
   },
   {
     value: "Cancelled",

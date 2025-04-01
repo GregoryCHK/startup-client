@@ -80,7 +80,7 @@ export function CsvExportButton<TData>({ table, filename = "confirmations", clas
     // For raw data, we'll use all columns from the table definition
     const allColumns = table.getAllColumns().map((column) => ({
       id: column.id,
-      header: typeof column.columnDef.header === "string" ? column.columnDef.header : column.id,
+      header: typeof column.columnDef.header === "string" ? column.columnDef.header : document.getElementById(column.id+"_button")?.innerText,
     }));
 
     // Create CSV header row - exclude action columns

@@ -212,7 +212,7 @@ export const Columns: ColumnDef<Confirmation>[] = [
       }
 
       return (
-        <span className={`flex items-center gap-2 ${statusConfig.color}`}>
+        <span className={`${statusConfig.color} flex items-center gap-2 `}>
           <statusConfig.icon className={`w-4 h-4 ${statusConfig.color}`} />
           {statusConfig.label}
         </span>
@@ -235,17 +235,16 @@ export const Columns: ColumnDef<Confirmation>[] = [
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
+          <DropdownMenuContent align="end" className="space-y-1 px-2">
+            <DropdownMenuLabel className="text-foreground/70">Actions</DropdownMenuLabel>
+            {/* <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(confirmation.name)}
             >
               Copy Confirmation ID
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => setIsDetailsModalOpen((prev) => !prev)}><FilePenLine/>View</DropdownMenuItem>
             <DropdownMenuItem onClick={() => setIsDeleteModalOpen((prev) => !prev)}><Trash2 />Delete</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 

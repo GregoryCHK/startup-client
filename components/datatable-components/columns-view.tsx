@@ -53,7 +53,7 @@ export function ColumnsView<TData>({table}: ColumnsViewProps<TData>) {
   return (
     <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="">
+            <Button variant="outline" >
               <Settings2/>
               View
             </Button>

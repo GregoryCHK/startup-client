@@ -14,6 +14,7 @@ import { Button } from '../ui/button';
 
 import { Plus, X } from 'lucide-react';
 import { CsvExportButton } from './csv-export-button';
+import { Separator } from '../ui/separator';
 
 
 interface DataTableToolBarProps<TData>{
@@ -62,19 +63,21 @@ export function DataTableToolBar<TData>({table, searchValue, setSearchValue} : D
           <Button
             variant="ghost"
             onClick={() => table.resetColumnFilters()}
-            className="h-8 text-sm"
+            className="h-7 text-sm"
           >
             Reset
             <X className="ml-2 h-4 w-4" />
           </Button>
         )}
       </div>
-      <div className="flex space-x-2">
+      <div className="flex items-center space-x-2">
         {/* Add Entry Button */}
-        <Button variant="outline" onClick={() => setIsModalOpen((prev) => !prev)}>
+        <Button className='bg-custom text-sm hover:bg-custom-secondary' onClick={() => setIsModalOpen((prev) => !prev)}>
           <Plus />
           Add
         </Button>
+        {/* Vertical Seperator */}
+        <Separator orientation="vertical" className="h-6" />
         {/* Columns View Menu */}
         <div>
           <ColumnsView table={table}/>

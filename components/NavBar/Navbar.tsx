@@ -29,14 +29,14 @@ function NavBar() {
                 <div className="hidden md:flex items-center h-full">
                     {menuitmes.map((item, index) => (
                         <React.Fragment key={item.name}>
-                        <Link href={item.href} className="menulinks">
-                            {item.name}
-                        </Link>
+                            <Link href={item.href} className="menulinks">
+                                {item.name}
+                            </Link>
 
-                        {/* Add a separator after each link except the last one */}
-                        {index < menuitmes.length - 1 && (
-                            <Separator orientation="vertical" className="text-for mx-2 h-4" />
-                        )}
+                            {/* Add a separator after each link except the last one */}
+                            {index < menuitmes.length - 1 && (
+                                <Separator orientation="vertical" className="text-foreground mx-2 h-4" />
+                            )}
                         </React.Fragment>
                     ))}
                 </div>
