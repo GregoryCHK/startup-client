@@ -1,6 +1,7 @@
 // This type is used to define the shape of the data.
 // You can use a Zod schema here if you want.
 
+import { StringToBoolean } from 'class-variance-authority/types';
 import { CircleCheck, Timer, XCircle, ArrowDown, ArrowUp, ArrowRight, ClockAlert} from 'lucide-react';
 
 export type Confirmation = {
@@ -18,6 +19,37 @@ export type Confirmation = {
   depositAmount: number;
   destinations: string;
   notes?: string;
+  actionPlan?: ActionPlan;
+  accomodation?: Accomodation;
+};
+
+export type ActionPlan = {
+  id: string;
+  confirmationId: string;
+  createdAt: string;
+  updatedAt: string;
+  entries: ActionPlanEntry[];
+};
+
+export type ActionPlanEntry ={
+  id: string;
+  status: string;
+  date: string;
+  time: string;
+  service: string;
+  supplier: string;
+  entry_date: string;
+  net_rate: number;
+  supplier_comments?: string;
+  budget_rate?: number;
+  price_comments?: string;
+};
+
+export type Accomodation = {
+  id: string;
+  confirmationId: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export const priorities = [
@@ -52,7 +84,7 @@ export const status = [
     value: "In Progress",
     label: "In Progress",
     icon: Timer,
-    color: "text-[#F3C97B]" // color for In Progress
+    color: "text-[#F3C97B]" // color for In Progress (doesnt work)
   },
   {
     value: "Cancelled",
