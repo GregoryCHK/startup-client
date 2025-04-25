@@ -72,8 +72,8 @@ export function DataTableToolBar<TData>({table, searchValue, setSearchValue} : D
       </div>
       <div className="flex items-center space-x-2">
         {/* Add Entry Button */}
-        <Button className='bg-custom text-sm hover:bg-custom-secondary' onClick={() => setIsModalOpen((prev) => !prev)}>
-          <Plus />
+        <Button className='bg-custom text-xs hover:bg-custom-secondary' onClick={() => setIsModalOpen((prev) => !prev)}>
+          <Plus/>
           Add
         </Button>
         {/* Vertical Seperator */}

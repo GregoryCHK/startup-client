@@ -20,7 +20,7 @@ export type Confirmation = {
   destinations: string;
   notes?: string;
   actionPlan?: ActionPlan;
-  accomodation?: Accomodation;
+  accommodation?: Accommodation;
 };
 
 export type ActionPlan = {
@@ -28,7 +28,7 @@ export type ActionPlan = {
   confirmationId: string;
   createdAt: string;
   updatedAt: string;
-  entries: ActionPlanEntry[];
+  actionPlanEntries: ActionPlanEntry[];
 };
 
 export type ActionPlanEntry ={
@@ -38,18 +38,33 @@ export type ActionPlanEntry ={
   time: string;
   service: string;
   supplier: string;
-  entry_date: string;
-  net_rate: number;
-  supplier_comments?: string;
-  budget_rate?: number;
-  price_comments?: string;
+  entryDate: string;
+  netRate: number;
+  supplierComments?: string;
+  budgetRate?: number;
+  priceComments?: string;
 };
 
-export type Accomodation = {
+export type Accommodation = {
   id: string;
   confirmationId: string;
   createdAt: string;
   updatedAt: string;
+  accommodationEntries: AccomodationEntry[];
+};
+
+export type AccomodationEntry = {
+  id: string;
+  status: string;
+  location: string;
+  checkIn : Date;
+  checkOut: Date;
+  nights: number;
+  hotel: string;
+  typeOfRoom: string;
+  netRate: number;
+  cancellationPolicy: string;
+  comments: string;
 };
 
 export const priorities = [

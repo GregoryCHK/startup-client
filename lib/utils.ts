@@ -16,17 +16,32 @@ export const serializeToSnakeCase = (obj: any) => {
   );
 };
 
-// Convert snake_case → camelCase and formats String Object to Date (for receiving data from the backend)
-export const deserializeToCamelCase = (obj: any) => {
-  return Object.fromEntries(
+// // Convert snake_case → camelCase and formats String Object to Date (for receiving data from the backend)
+// export const deserializeToCamelCase = (obj: any) => {
+//   return Object.fromEntries(
+//       Object.entries(obj).map(([key, value]) => [
+//           key.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase()), 
+//           typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value) // Check if it's a valid date string (yyyy-MM-dd)
+//           ? parse(value, "yyyy-MM-dd", new Date()) // Convert back to Date object
+//           : value,
+//       ])
+//   );
+// };
+
+export const deserializeToCamelCase = (obj: any): any => {
+  if (Array.isArray(obj)) {
+    return obj.map(deserializeToCamelCase);
+  } else if (obj !== null && typeof obj === "object") {
+    return Object.fromEntries(
       Object.entries(obj).map(([key, value]) => [
-          key.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase()), 
-          typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value) // Check if it's a valid date string (yyyy-MM-dd)
-          ? parse(value, "yyyy-MM-dd", new Date()) // Convert back to Date object
-          : value,
+        key.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase()),
+        deserializeToCamelCase(value),
       ])
-  );
+    );
+  }
+  return obj;
 };
+
 
 // Format Date to DD/MM/YY
 export const formatDate = (dateString: string | Date) => {
