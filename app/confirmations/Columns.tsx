@@ -269,7 +269,14 @@ export const Columns: ColumnDef<Confirmation>[] = [
       const confirmationName = row.original.name; // Passed in the breadcrumb
 
       return(
-        <Link className="flex justify-center p-2" href={`/confirmations/${confirmationId}?confirmationName=${encodeURIComponent(confirmationName)}`}>
+        <Link className="flex justify-center p-2" 
+              // href={`/confirmations/${confirmationId}?confirmationName=${encodeURIComponent(confirmationName)}`}
+              href={{
+                pathname: `/confirmations/${confirmationId}/`,
+                query: { confirmationName },
+              }}
+              shallow={true}
+        >
           <CircleArrowRight className="h-5 w-5" strokeWidth={1.5}/>
         </Link>
       )

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
+import { Roboto, Nunito, Poppins } from "next/font/google";
 import "./globals.css";
 
 import NavBar from "@/components/navbar/Navbar";
@@ -13,7 +13,19 @@ const roboto = Roboto({
   weight: ['400', '700'],
   subsets: ['latin'],
   display: 'swap',
-})
+});
+
+const nunito = Nunito({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+  display: 'swap',
+});
+
+const poppins = Poppins({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: "Pilot StartUp",
@@ -27,7 +39,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={roboto.className}>
+      <body className={poppins.className}>
         <QueryProvider>
           <div className="sticky top-0 z-50 bg-background">
             <NavBar />
