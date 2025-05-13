@@ -31,7 +31,7 @@ export type ActionPlan = {
   actionPlanEntries: ActionPlanEntry[];
 };
 
-export type ActionPlanEntry ={
+export type ActionPlanEntry = {
   id: string;
   status: string;
   date: string;

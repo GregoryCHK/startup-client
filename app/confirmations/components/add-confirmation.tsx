@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 
 import { addConfirmation } from "@/lib/api/confirmations";
-import { Confirmation, status, priorities } from "../../types/confirmations";
+import { Confirmation, status, priorities } from "@/types/confirmations";
 
 
 import DatePicker from "@/components/date-picker";

@@ -7,7 +7,7 @@ import { MoreHorizontal, ChevronsUpDown, CircleArrowRight, Trash2, FilePenLine, 
 
 import BasicModal from "@/components/basic-modal";
 import ConfirmationDetails from "./confirmation-details";
-import { Confirmation, priorities, status } from "../../types/confirmations";
+import { Confirmation, status, priorities } from "@/types/confirmations";
 import { formatDate } from "@/lib/utils";
 
 import Link from "next/link";
@@ -212,7 +212,7 @@ export const Columns: ColumnDef<Confirmation>[] = [
       }
 
       return (
-        <span className={`${statusConfig.color} flex items-center gap-2 `}>
+        <span className={`${statusConfig.color} flex items-center gap-2`}>
           <statusConfig.icon className={`w-4 h-4 ${statusConfig.color}`} />
           {statusConfig.label}
         </span>
@@ -231,7 +231,7 @@ export const Columns: ColumnDef<Confirmation>[] = [
         <>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
+            <Button variant="ghost" className="h-6 w-6 px-3">
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
@@ -269,7 +269,7 @@ export const Columns: ColumnDef<Confirmation>[] = [
       const confirmationName = row.original.name; // Passed in the breadcrumb
 
       return(
-        <Link className="flex justify-center p-2" 
+        <Link className="flex justify-center" 
               // href={`/confirmations/${confirmationId}?confirmationName=${encodeURIComponent(confirmationName)}`}
               href={{
                 pathname: `/confirmations/${confirmationId}/`,
@@ -277,7 +277,7 @@ export const Columns: ColumnDef<Confirmation>[] = [
               }}
               shallow={true}
         >
-          <CircleArrowRight className="h-5 w-5" strokeWidth={1.5}/>
+          <CircleArrowRight className="h-5 w-5 hover:text-[#AB274E]" strokeWidth={1.5}/>
         </Link>
       )
     },

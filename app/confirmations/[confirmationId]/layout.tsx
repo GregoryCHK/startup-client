@@ -4,7 +4,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchConfirmationById } from '@/lib/api/confirmations';
 import { Confirmation } from '@/types/confirmations';
-import { TabButton } from './tab-button'; 
+import { TabButton } from './components/tab-button'; 
 import { House, Plus } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { addActionPlan, addAccommodation } from '@/lib/api/action-plans';
@@ -61,7 +61,7 @@ export default function ConfirmationLayout({ children }: {children:React.ReactNo
             });
         },
     });
-    console.log(confirmation?.accommodation);
+    // console.log(confirmation?.accommodation);
 
     if (isLoading) return <div className="flex items-center justify-center mt-10 text-xl text-custom">Loading...</div>;
     if (error) return <div className="flex justify-center mt-10 text-red-500">Error Loading Confirmation Overview</div>;
@@ -70,14 +70,16 @@ export default function ConfirmationLayout({ children }: {children:React.ReactNo
         <section className="h-[88vh] my-2 mx-4 py-2 px-4 rounded-sm shadow-lg border">
             <div className="flex justify-between items-center mt-1">
                 <div className="flex items-center space-x-2">
+                    {/* Home Button */}
                     <Link href={{
                             pathname: `/confirmations/${confirmationId}/`,
                             query: { confirmationName },
                             }}>  
                         <House 
-                            className="h-8 text-custom shadow-sm hover:cursor-pointer hover:text-custom-secondary transition-colors" 
+                            className="h-8 text-custom  hover:cursor-pointer hover:text-custom-secondary transition-colors" 
                     />
                     </Link>
+                    {/* Action Plan Tab */}
                     {confirmation?.actionPlan && (
                     <TabButton
                         type="action-plan"
@@ -87,6 +89,7 @@ export default function ConfirmationLayout({ children }: {children:React.ReactNo
                         Action Plan
                     </TabButton>
                     )}
+                    {/* Accommodation Tab */}
                     {confirmation?.accommodation && (
                     <TabButton
                         type="accommodation"
@@ -97,6 +100,7 @@ export default function ConfirmationLayout({ children }: {children:React.ReactNo
                     </TabButton>
                     )}
                 </div>
+                {/* Add Button */}
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="rounded-full h-9 w-9">

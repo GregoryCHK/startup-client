@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import { ColumnsView } from './columns-view'; 
 import BasicModal from '../basic-modal';
-import AddConfirmation from '@/app/confirmations/add-confirmation';
+import AddConfirmation from '@/app/confirmations/components/add-confirmation';
 import { DataTableFacetedFilter } from './datatable-faceted-filter';
 import { priorities, status } from '@/types/confirmations';
 

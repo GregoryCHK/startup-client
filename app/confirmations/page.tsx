@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { DataTable } from "@/components/datatable-components/datatable";
-import { Columns } from "@/app/confirmations/columns";
+import { Columns } from "@/app/confirmations/components/columns";
 import { fetchConfirmations } from "@/lib/api/confirmations";
 
 export default function Page() {
@@ -23,7 +23,7 @@ export default function Page() {
     <section className="mt-2 mx-4">
       {/* <hr className="shadow-sm"/> */}
       <div className="py-3">
-        <DataTable columns={Columns} data={data || []} enablePagination={true} enableToolBar={true}></DataTable>
+        <DataTable columns={Columns} data={data || []} rowClassName="h-[53px] " cellClassName="[&:nth-last-child(-n+2)]:max-w-8" headerClassName=" [&:nth-last-child(-n+2)]:max-w-8" enablePagination={true} enableToolBar={true}></DataTable>
       </div>
     </section>
   )

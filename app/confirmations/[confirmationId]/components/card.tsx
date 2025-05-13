@@ -48,7 +48,7 @@ export function Card({ type, title, count, lastUpdated, confirmationId, confirma
     <div className="border rounded-lg p-4 shadow-sm hover:shadow-xl transition-shadow">
       <Link
         href={{
-          pathname: `/confirmations/${confirmationId}/${routeMap[type]}`,
+          pathname: `/confirmations/${confirmationId}/${type}`,
           query: { confirmationName },
         }} 
       >  

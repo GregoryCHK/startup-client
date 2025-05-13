@@ -14,6 +14,13 @@ function BreadCrumbs() {
   const searchParams = useSearchParams();
   const confirmationId = pathSegments[1]; // Get ID from URL
 
+  // Mapping for URL segments to display names
+  const displayNameMap: Record<string, string> = {
+    'action-plan': 'Action Plan',
+    'accommodation': 'Accommodation',
+    // Add other mappings as needed
+  };
+  
   // Fetch confirmation name if not in query params
   const { data: confirmation } = useQuery({
     queryKey: ['confirmation-name', confirmationId],
@@ -33,6 +40,11 @@ function BreadCrumbs() {
           const href = `/${pathSegments.slice(0, index + 1).join('/')}`;
           let nameLink = link[0].toUpperCase() + link.slice(1);
           const isLast = pathSegments.length === index + 1;
+          
+          // Apply display name transformation
+          if (displayNameMap[link]) {
+            nameLink = displayNameMap[link];
+          }
 
           // Replace with confirmation name if available
           if (index === 1 && confirmationName) {

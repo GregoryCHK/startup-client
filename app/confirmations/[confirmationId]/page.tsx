@@ -1,5 +1,5 @@
 'use client';
-import { Card } from './card';
+import { Card } from './components/card';
 import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { fetchConfirmationById } from '@/lib/api/confirmations';

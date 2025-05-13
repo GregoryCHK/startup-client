@@ -29,10 +29,14 @@ import * as React from "react";
 
 import { DataTablePagination } from "./datatable-pagination";
 import {DataTableToolBar} from "./datatable-toolbar";
+import { useEffect } from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  rowClassName?: string,
+  cellClassName?: string,
+  headerClassName?: string,
   enablePagination?: boolean;
   enableScroll?: boolean;
   enableToolBar?: boolean;
@@ -56,7 +60,7 @@ interface DataTableProps<TData, TValue> {
 //   );
 // };
 
-export function DataTable<TData, TValue>({columns, data, enablePagination=true, enableScroll=true, enableToolBar=true}: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({columns, data, rowClassName = "", cellClassName= "", headerClassName= "", enablePagination=true, enableScroll=true, enableToolBar=true}: DataTableProps<TData, TValue>) {
 
   const memoizedColumns = React.useMemo(() => columns, [columns]);
   const memoizedData = React.useMemo(() => data, [data]);
@@ -109,7 +113,7 @@ export function DataTable<TData, TValue>({columns, data, enablePagination=true, 
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id} className="px-4 py-2">
+                    <TableHead key={header.id} className={`py-2 ${headerClassName}`}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -127,9 +131,10 @@ export function DataTable<TData, TValue>({columns, data, enablePagination=true, 
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
+                    className={rowClassName}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
+                      <TableCell key={cell.id} className={cellClassName}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                     ))}
