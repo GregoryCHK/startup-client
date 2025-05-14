@@ -34,7 +34,7 @@ export type ActionPlan = {
 export type ActionPlanEntry = {
   id: string;
   status: string;
-  date: string;
+  date: Date;
   time: string;
   service: string;
   supplier: string;

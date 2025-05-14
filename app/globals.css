@@ -22,17 +22,45 @@ select {
     .menulinks{
         @apply py-2 px-4 rounded-md flex items-center text-sm font-normal text-gray-700 transition-all duration-300 ease-in-out hover:bg-muted hover:text-custom active:bg-gray-200;
     }
-}
-
-.input-field {
-  @apply w-full p-2  text-foreground/90 border border-input rounded-lg focus:ring-2 focus:ring-custom focus:outline-none;
-}
-
-@layer components{
     .breadcrumbs{
-        @apply text-custom text-xs hover:text-custom-secondary transition-colors;
-    }
+      @apply text-custom text-xs hover:text-custom-secondary transition-colors;
+  }
+  .input-field {
+    @apply w-full p-2  text-foreground/90 border border-input rounded-lg focus:ring-2 focus:ring-custom focus:outline-none;
+  }
+  .table-editable-textarea {
+    @apply  w-full                      
+            resize-none                
+            overflow-hidden            
+            whitespace-pre-wrap        
+            break-words                
+            bg-transparent             
+            outline-none
+            text-center
+            focus:text-custom
+            focus:italic
+            /*// Takes up the full width of the cell
+              // Disable manual resizing we handle it
+              // Prevent scrollbars
+              // Preserve whitespace and wrap text
+              // Break long words to prevent overflow
+              // Seamless appearance inside the table
+              // Remove default focus outline 
+            */
+  }
+  .rate-cell {
+    @apply [&:nth-child(9)]:bg-[#7d3cfe8e] [&:nth-child(9)]:max-w-20 [&:nth-child(7)]:bg-[#f5ba4d4e] [&:nth-child(7)]:max-w-20;
+  }
+  .rate-header-width {
+    @apply [&:nth-child(7)]:max-w-20 [&:nth-child(9)]:max-w-20;
+  }
+  .date-time-cell{
+    @apply [&:nth-child(3)]:max-w-24;
+  }
 }
+
+
+
 
 @layer base {
   :root {

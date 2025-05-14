@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 
@@ -10,9 +11,8 @@ import {
 } from "@/components/ui/popover";
 
 import { CalendarIcon } from "lucide-react";
-import { useState } from "react";
 
-export default function DatePicker({ value, onChange, placeholder, readOnly, }: { value?: Date; onChange: (date?: Date) => void; placeholder: string; readOnly: boolean; }) {
+export default function DatePicker({className, value, onChange, placeholder, readOnly, }: {className?:string, value?: Date; onChange: (date?: Date) => void; placeholder: string; readOnly: boolean; }) {
   const [open, setOpen] = useState(false); // State to control popover visibility
 
   return (
@@ -27,7 +27,9 @@ export default function DatePicker({ value, onChange, placeholder, readOnly, }: 
           disabled={readOnly}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {value ? format(value, "dd MMM yy") : <span className={readOnly ? "text-foreground" : ""}>{placeholder}</span>}
+          <span className={cn(!value && "text-muted-foreground", readOnly && "text-foreground", "mt-[3px]")}>
+            {value ? format(value, "dd MMM yy") : placeholder}
+          </span>
         </Button>
       </PopoverTrigger>
       {!readOnly && ( // Only show the calendar when not in read-only mode

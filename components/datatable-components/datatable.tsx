@@ -106,7 +106,7 @@ export function DataTable<TData, TValue>({columns, data, rowClassName = "", cell
       {/* Table */}
       <div className="rounded-md border shadow">
         {/* Wrapper to handle fixed layout */}
-        <div className="relative w-full max-h-[75vh] overflow-y-auto">
+        <div className="relative w-full max-h-[77vh] overflow-y-auto">  {/* max-h-[75vh] the original. if something's wrong set 75vh */}
           <Table>
             {/* Static Header */}
             <TableHeader>

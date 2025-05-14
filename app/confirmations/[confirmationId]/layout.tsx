@@ -65,9 +65,9 @@ export default function ConfirmationLayout({ children }: {children:React.ReactNo
 
     if (isLoading) return <div className="flex items-center justify-center mt-10 text-xl text-custom">Loading...</div>;
     if (error) return <div className="flex justify-center mt-10 text-red-500">Error Loading Confirmation Overview</div>;
-
+//h-[88vh]
     return (
-        <section className="h-[88vh] my-2 mx-4 py-2 px-4 rounded-sm shadow-lg border">
+        <section className="h-[89vh] my-2 mx-4 py-2 px-4 rounded-sm shadow-lg border">
             <div className="flex justify-between items-center mt-1">
                 <div className="flex items-center space-x-2">
                     {/* Home Button */}

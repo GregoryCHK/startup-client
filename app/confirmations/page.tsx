@@ -23,7 +23,7 @@ export default function Page() {
     <section className="mt-2 mx-4">
       {/* <hr className="shadow-sm"/> */}
       <div className="py-3">
-        <DataTable columns={Columns} data={data || []} rowClassName="h-[53px] " cellClassName="[&:nth-last-child(-n+2)]:max-w-8" headerClassName=" [&:nth-last-child(-n+2)]:max-w-8" enablePagination={true} enableToolBar={true}></DataTable>
+        <DataTable columns={Columns} data={data || []} rowClassName="h-[53px] hover:text-custom" cellClassName="[&:nth-last-child(-n+2)]:max-w-8" headerClassName=" [&:nth-last-child(-n+2)]:max-w-8" enablePagination={true} enableToolBar={true}></DataTable>
       </div>
     </section>
   )

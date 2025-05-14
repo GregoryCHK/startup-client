@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { DataTable } from '@/components/datatable-components/datatable';
 import { ActionPlanEntry } from '@/types/confirmations'
-import { Columns } from './columns';
+import { Columns } from './components/columns';
 import { useQuery } from '@tanstack/react-query';
 import { fetchActionPlanEntries } from '@/lib/api/action-plans';
 
@@ -83,11 +83,15 @@ export default function page() {
   return (
     <>
     <div className='mt-5'>
-      <DataTable columns={Columns} data={data|| []} rowClassName='h-16' cellClassName='border text-center first:max-w-8' headerClassName='text-center first:max-w-8' enablePagination={false} enableScroll={false} enableToolBar={false}/>    
+      <DataTable  columns={Columns} data={data|| []} 
+                  rowClassName='h-16' 
+                  cellClassName='border text-center first:max-w-8 rate-cell date-time-cell' 
+                  headerClassName='text-center first:max-w-8 rate-header-width date-time-cell' 
+                  enablePagination={false} 
+                  enableScroll={false} 
+                  enableToolBar={false}
+      />    
     </div>
-    {/* <div>
-      <CsvExportButton table={}/>
-    </div> */}
     </>
   )
 };
