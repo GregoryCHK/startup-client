@@ -34,12 +34,11 @@ export type ActionPlan = {
 export type ActionPlanEntry = {
   id: string;
   status: string;
-  date: Date;
-  time: string;
-  service: string;
-  supplier: string;
-  entryDate: string;
-  netRate: number;
+  date?: Date;
+  time?: string;
+  service?: string;
+  supplier?: string;
+  netRate?: number;
   supplierComments?: string;
   budgetRate?: number;
   priceComments?: string;

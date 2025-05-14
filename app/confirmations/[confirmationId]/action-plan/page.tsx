@@ -82,11 +82,11 @@ export default function page() {
   // const [mockData, setData] = useState<ActionPlanEntry[]>(initialData);
   return (
     <>
-    <div className='mt-5'>
+    <div className='mt-5 '>
       <DataTable  columns={Columns} data={data|| []} 
-                  rowClassName='h-16' 
-                  cellClassName='border text-center first:max-w-8 rate-cell date-time-cell' 
-                  headerClassName='text-center first:max-w-8 rate-header-width date-time-cell' 
+                  rowClassName='h-[30px]' 
+                  cellClassName='border text-center first:max-w-8 action-plan-cell-widths action-plan-cell-colors' 
+                  headerClassName='text-center first:max-w-8 action-plan-cell-widths' 
                   enablePagination={false} 
                   enableScroll={false} 
                   enableToolBar={false}

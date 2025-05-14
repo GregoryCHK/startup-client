@@ -13,11 +13,13 @@ const hours = Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, "0")
 const minutes = Array.from({ length: 12 }, (_, i) => (i * 5).toString().padStart(2, "0")); // 00, 05, ..., 55
 
 export default function TimePicker({
+  className,
   value,
   onChange,
   placeholder,
   readOnly,
 }: {
+  className?: string,
   value?: string // format: "HH:mm"
   onChange: (time?: string) => void
   placeholder: string
@@ -40,7 +42,8 @@ export default function TimePicker({
           variant="outline"
           className={cn(
             "w-full h-auto font-normal gap-1 focus:ring-custom focus:ring-2",
-            !value && "text-muted-foreground"
+            !value && "text-muted-foreground",
+            className
           )}
           disabled={readOnly}
         >

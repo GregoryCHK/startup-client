@@ -22,7 +22,8 @@ export default function DatePicker({className, value, onChange, placeholder, rea
           variant="outline"
           className={cn(
             "w-full h-auto justify-start text-left font-normal focus:ring-custom focus:ring-2",
-            !value && "text-muted-foreground"
+            !value && "text-muted-foreground",
+            className
           )}
           disabled={readOnly}
         >

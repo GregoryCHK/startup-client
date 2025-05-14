@@ -50,118 +50,120 @@ export const Columns: ColumnDef<ActionPlanEntry>[] =[
       },
     },
     {
-        accessorKey: "status",
-        header: "Status",
+      accessorKey: "status",
+      header: "Status",
     },
     {
-        accessorKey: "date",
-        header: "Date",
-        cell: ({ row, column }) => {
-          const value = row.getValue<Date>(column.id);
+      accessorKey: "date",
+      header: "Date",
+      cell: ({ row, column }) => {
+        const value = row.getValue<Date>(column.id);
 
-          const queryClient = useQueryClient();
+        const queryClient = useQueryClient();
 
-          const updateEntryMutation = useMutation({
-            mutationFn: ({ id, ...data }: { id: number; [key: string]: any }) =>
-              updateActionPlanEntry(id, data),
-            onSuccess: () => queryClient.invalidateQueries({ queryKey: ["action-plan-entries"] }),
-          });
+        const updateEntryMutation = useMutation({
+          mutationFn: ({ id, ...data }: { id: number; [key: string]: any }) =>
+            updateActionPlanEntry(id, data),
+          onSuccess: () => queryClient.invalidateQueries({ queryKey: ["action-plan-entries"] }),
+        });
 
-          return (
-            <DatePicker
-              value={value}
-              onChange={(newDate) => {
-                if (newDate && newDate !== value) {
-                  updateEntryMutation.mutate({ id: Number(row.original.id), date: newDate });
-                }
-              }}
-              placeholder="Select date"
-              readOnly={false}
-            />
-          );
-        }
+        return (
+          <DatePicker
+            value={value}
+            onChange={(newDate) => {
+              if (newDate && newDate !== value) {
+                updateEntryMutation.mutate({ id: Number(row.original.id), date: newDate });
+              }
+            }}
+            placeholder="Select date"
+            readOnly={false}
+            className="border-none shadow-none bg-transparent justify-center hover:bg-transparent focus:ring-0 py-1 text-sm"
+          />
+        );
+      },
     },
     {
-        accessorKey: "time",
-        header: "Time",
-        cell: ({ row, column }) => {
-          const rawValue = row.getValue<string>(column.id);
-          const value = rawValue?.slice(0, 5); // Ensures it's in "HH:mm" format
+      accessorKey: "time",
+      header: "Time",
+      cell: ({ row, column }) => {
+        const rawValue = row.getValue<string>(column.id);
+        const value = rawValue?.slice(0, 5); // Ensures it's in "HH:mm" format
 
-          const queryClient = useQueryClient();
-      
-          const updateEntryMutation = useMutation({
-            mutationFn: ({ id, ...data }: { id: number; [key: string]: any }) =>
-              updateActionPlanEntry(id, data),
-            onSuccess: () => queryClient.invalidateQueries({ queryKey: ["action-plan-entries"] }),
-          });
-      
-          return (
-            <TimePicker
-              value={value}
-              onChange={(newValue) => {
-                if (newValue !== value) {
-                  updateEntryMutation.mutate({ id: Number(row.original.id), time: newValue })
-                }
-              }}
-              placeholder="Select time"
-              readOnly={false}
-            />
-          );
-        },
+        const queryClient = useQueryClient();
+    
+        const updateEntryMutation = useMutation({
+          mutationFn: ({ id, ...data }: { id: number; [key: string]: any }) =>
+            updateActionPlanEntry(id, data),
+          onSuccess: () => queryClient.invalidateQueries({ queryKey: ["action-plan-entries"] }),
+        });
+    
+        return (
+          <TimePicker
+            value={value}
+            onChange={(newValue) => {
+              if (newValue !== value) {
+                updateEntryMutation.mutate({ id: Number(row.original.id), time: newValue })
+              }
+            }}
+            placeholder="Select time"
+            readOnly={false}
+            className="border-none shadow-none bg-transparent justify-center hover:bg-transparent focus:ring-0 py-1 text-sm"
+          />
+        );
+      },
     },
     {
-        accessorKey: "service",
-        header: "Service",
-        cell: ({ row, column }) => {
-          const value = row.getValue<string>(column.id);
-          const queryClient = useQueryClient();
-  
-          // Mutation Function to update the cell input
-          const updateEntryMutation = useMutation({
-            mutationFn: ({ id, ...data }: { id: number; [key: string]: any }) =>
-              updateActionPlanEntry(id, data),
-            onSuccess: () => queryClient.invalidateQueries({ queryKey: ["action-plan-entries"] }),
-          });
-  
-          // Ref to directly access the textarea DOM element
-          const textareaRef = useRef<HTMLTextAreaElement>(null)
-  
-          // Auto-adjust height on mount based on initial content
-          useEffect(() => {
-            const textarea = textareaRef.current
-            if (textarea) {
-              textarea.style.height = "auto" // Reset height
-              textarea.style.height = textarea.scrollHeight + "px" // Set to scroll height
-            }
-          }, [value])
-  
-          return (
-            <textarea
-              ref={textareaRef}
-              className="table-editable-textarea"
-              defaultValue={value}
-              rows={1}
-              onBlur={(e) => {
-                const newValue = e.target.value;
-                if (newValue !== value) {
-                  updateEntryMutation.mutate({ id: Number(row.original.id), service: newValue });
-                }
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  (e.target as HTMLInputElement).blur();
-                }
-              }}
-              onInput={(e) => {
-                // Dynamically adjust the height as user types
-                const target = e.target as HTMLTextAreaElement
-                target.style.height = "auto" // Reset height to shrink if needed
-                target.style.height = target.scrollHeight + "px" // Expand to fit content
-              }}
-            />
-          );
-        },
+      accessorKey: "service",
+      header: "Service",
+      cell: ({ row, column }) => {
+        const value = row.getValue<string>(column.id);
+        const queryClient = useQueryClient();
+
+        // Mutation Function to update the cell input
+        const updateEntryMutation = useMutation({
+          mutationFn: ({ id, ...data }: { id: number; [key: string]: any }) =>
+            updateActionPlanEntry(id, data),
+          onSuccess: () => queryClient.invalidateQueries({ queryKey: ["action-plan-entries"] }),
+        });
+
+        // Ref to directly access the textarea DOM element
+        const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+        // Auto-adjust height on mount based on initial content
+        useEffect(() => {
+          const textarea = textareaRef.current
+          if (textarea) {
+            textarea.style.height = "auto" // Reset height
+            textarea.style.height = textarea.scrollHeight + "px" // Set to scroll height
+          }
+        }, [value])
+
+        return (
+          <textarea
+            ref={textareaRef}
+            className="table-editable-textarea"
+            defaultValue={value}
+            rows={1}
+            onBlur={(e) => {
+              const newValue = e.target.value;
+              if (newValue !== value) {
+                updateEntryMutation.mutate({ id: Number(row.original.id), service: newValue });
+              }
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                (e.target as HTMLInputElement).blur();
+              }
+            }}
+            onInput={(e) => {
+              // Dynamically adjust the height as user types
+              const target = e.target as HTMLTextAreaElement
+              target.style.height = "auto" // Reset height to shrink if needed
+              target.style.height = target.scrollHeight + "px" // Expand to fit content
+            }}
+          />
+        );
+      },
     },
     {
       accessorKey: "supplier",
