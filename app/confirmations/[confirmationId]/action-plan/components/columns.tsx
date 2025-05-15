@@ -4,18 +4,17 @@ import { ColumnDef } from "@tanstack/react-table";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { ActionPlanEntry } from "@/types/confirmations";
-import BasicModal from "@/components/basic-modal";
 import DeleteActionPlanEntry from "./delete-entry";
 import { updateActionPlanEntry } from "@/lib/api/action-plans";
-import { formatDate } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { MoreVertical, Trash2 } from "lucide-react";
+
 import DatePicker from "@/components/date-picker";
 import TimePicker from "@/components/time-picker";
-import { format, isValid } from "date-fns";
-
+import EditableTextarea from "@/components/datatable-components/editable-textarea-cell";
+import BasicModal from "@/components/basic-modal";
 
 
 export const Columns: ColumnDef<ActionPlanEntry>[] =[
@@ -52,6 +51,96 @@ export const Columns: ColumnDef<ActionPlanEntry>[] =[
     {
       accessorKey: "status",
       header: "Status",
+      cell: ({row, column}) => {
+        const statusValue = row.getValue<string>(column.id);
+        const queryClient = useQueryClient();
+
+        type ActionPlanStatus = "Confirmed" | "Pending" | "Cancelled" | "Issued" | "No Action";
+
+        // State to manage status selection
+        const [status, setStatus] = useState<ActionPlanStatus>(statusValue as ActionPlanStatus);
+
+
+        // Define styles for each Status
+        const statusColors = {
+          Confirmed: "bg-[#73bfc6] hover:bg-[#06919e] transition-colors",
+          Pending: "bg-[#F8E2B1] hover:bg-[#e6ca8e] text-foreground transition-colors",
+          Cancelled: "bg-[#cc7a94] hover:bg-[#d74b73] text-white transition-colors",
+          Issued: "bg-[#73bfc6] hover:bg-[#06919e] text-white transition-colors",
+          'No Action': "bg-[#b5acb5]  hover:bg-[#ac93ac] transition-colors",
+        };
+
+        // Update the local status whenever the statusValue changes
+        useEffect(() => {
+          setStatus(statusValue as ActionPlanStatus);
+        }, [statusValue]);
+
+        // Mutation for updating the status 
+        const updateEntryMutation = useMutation({
+          mutationFn: ({ id, ...data }: { id: number; [key: string]: any }) =>
+            updateActionPlanEntry(id, data),
+          onSuccess: () => queryClient.invalidateQueries({ queryKey: ["action-plan-entries"] }),
+          
+        });
+
+        return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button className={`w-[90px] text-sm focus-visible:ring-0 ${statusColors[status] || "bg-gray-300 text-black"} transition-none`}>
+              {status}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="px-2">
+            <DropdownMenuLabel className="">Status</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => {
+                const newStatus: ActionPlanStatus = "Confirmed";
+                updateEntryMutation.mutate({ id: Number(row.original.id), status: newStatus });
+              }}
+            >
+              Confirmed
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                const newStatus: ActionPlanStatus = "Issued";
+                setStatus(newStatus); 
+                updateEntryMutation.mutate({ id: Number(row.original.id), status: newStatus }); // API call
+              }}
+            >
+              Issued
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                const newStatus: ActionPlanStatus = "Pending";
+                setStatus(newStatus);                
+                updateEntryMutation.mutate({ id: Number(row.original.id), status: newStatus }); // API call
+              }}
+            >
+              Pending
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                const newStatus: ActionPlanStatus = "Cancelled";
+                setStatus(newStatus);
+                updateEntryMutation.mutate({ id: Number(row.original.id), status: newStatus }); // API call
+              }}
+            >
+              Cancelled
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                const newStatus: ActionPlanStatus = "No Action";
+                setStatus(newStatus);
+                updateEntryMutation.mutate({ id: Number(row.original.id), status: newStatus }); // API call
+              }}
+            >
+              No Action
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )
+      },
     },
     {
       accessorKey: "date",
@@ -116,58 +205,17 @@ export const Columns: ColumnDef<ActionPlanEntry>[] =[
       accessorKey: "service",
       header: "Service",
       cell: ({ row, column }) => {
-        const value = row.getValue<string>(column.id);
-        const queryClient = useQueryClient();
-
-        // Mutation Function to update the cell input
-        const updateEntryMutation = useMutation({
-          mutationFn: ({ id, ...data }: { id: number; [key: string]: any }) =>
-            updateActionPlanEntry(id, data),
-          onSuccess: () => queryClient.invalidateQueries({ queryKey: ["action-plan-entries"] }),
-        });
-
-        // Ref to directly access the textarea DOM element
-        const textareaRef = useRef<HTMLTextAreaElement>(null)
-
-        // Auto-adjust height on mount based on initial content
-        useEffect(() => {
-          const textarea = textareaRef.current
-          if (textarea) {
-            textarea.style.height = "auto" // Reset height
-            textarea.style.height = textarea.scrollHeight + "px" // Set to scroll height
-          }
-        }, [value])
-
-        return (
-          <textarea
-            ref={textareaRef}
-            className="table-editable-textarea"
-            defaultValue={value}
-            rows={1}
-            onBlur={(e) => {
-              const newValue = e.target.value;
-              if (newValue !== value) {
-                updateEntryMutation.mutate({ id: Number(row.original.id), service: newValue });
-              }
-            }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                (e.target as HTMLInputElement).blur();
-              }
-            }}
-            onInput={(e) => {
-              // Dynamically adjust the height as user types
-              const target = e.target as HTMLTextAreaElement
-              target.style.height = "auto" // Reset height to shrink if needed
-              target.style.height = target.scrollHeight + "px" // Expand to fit content
-            }}
-          />
-        );
+      const value = row.getValue<string>(column.id);
+      return <EditableTextarea value={value} rowId={Number(row.original.id)} field="service" className="table-editable-textarea"/>;
       },
     },
     {
       accessorKey: "supplier",
       header: "Supplier",
+      cell: ({ row, column }) => {
+      const value = row.getValue<string>(column.id);
+      return <EditableTextarea value={value} rowId={Number(row.original.id)} field="supplier" className="table-editable-textarea"/>;
+      },
     },
     {
       accessorKey: "netRate",
@@ -178,121 +226,19 @@ export const Columns: ColumnDef<ActionPlanEntry>[] =[
       header: "Supplier Comments",
       cell: ({ row, column }) => {
         const value = row.getValue<string>(column.id);
-        const queryClient = useQueryClient();
-
-        // Mutation Function to update the cell input
-        const updateEntryMutation = useMutation({
-          mutationFn: ({ id, ...data }: { id: number; [key: string]: any }) =>
-            updateActionPlanEntry(id, data),
-          onSuccess: () => queryClient.invalidateQueries({ queryKey: ["action-plan-entries"] }),
-        });
-
-        // Ref to directly access the textarea DOM element
-        const textareaRef = useRef<HTMLTextAreaElement>(null)
-
-        // Auto-adjust height on mount based on initial content
-        useEffect(() => {
-          const textarea = textareaRef.current
-          if (textarea) {
-            textarea.style.height = "auto" // Reset height
-            textarea.style.height = textarea.scrollHeight + "px" // Set to scroll height
-          }
-        }, [value])
-
-        return (
-          <textarea
-            ref={textareaRef}
-            className="table-editable-textarea"
-            defaultValue={value}
-            rows={1}
-            onBlur={(e) => {
-              const newValue = e.target.value;
-              if (newValue !== value) {
-                updateEntryMutation.mutate({ id: Number(row.original.id), supplierComments: newValue });
-              }
-            }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                (e.target as HTMLInputElement).blur();
-              }
-            }}
-            onInput={(e) => {
-              // Dynamically adjust the height as user types
-              const target = e.target as HTMLTextAreaElement
-              target.style.height = "auto" // Reset height to shrink if needed
-              target.style.height = target.scrollHeight + "px" // Expand to fit content
-            }}
-          />
-        );
+        return <EditableTextarea value={value} rowId={Number(row.original.id)} field="supplierComments" className="table-editable-textarea"/>;
       },
     },
     {
       accessorKey: "budgetRate",
       header: "Budget Rate (€)"
-      // header: () => (
-      //   <div className="text-[#7c3cfe]">
-      //     Budget Rate (€)
-      //   </div>
-      // ),
-      // cell: ({ row, column }) => {
-      //   const value = row.getValue<string>(column.id);
-
-      //   return(
-          // <span className="text-[#7d3cfe8e] font-semibold">{value}</span>
-      //   );
-      // },
     },
     {
       accessorKey: "priceComments",
       header: "Price Comments",
       cell: ({ row, column }) => {
         const value = row.getValue<string>(column.id);
-        const queryClient = useQueryClient();
-
-        // Mutation Function to update the cell input
-        const updateEntryMutation = useMutation({
-          mutationFn: ({ id, ...data }: { id: number; [key: string]: any }) =>
-            updateActionPlanEntry(id, data),
-          onSuccess: () => queryClient.invalidateQueries({ queryKey: ["action-plan-entries"] }),
-        });
-
-        // Ref to directly access the textarea DOM element
-        const textareaRef = useRef<HTMLTextAreaElement>(null)
-
-        // Auto-adjust height on mount based on initial content
-        useEffect(() => {
-          const textarea = textareaRef.current
-          if (textarea) {
-            textarea.style.height = "auto" // Reset height
-            textarea.style.height = textarea.scrollHeight + "px" // Set to scroll height
-          }
-        }, [value])
-
-        return (
-          <textarea
-            ref={textareaRef}
-            className="table-editable-textarea"
-            defaultValue={value}
-            rows={1}
-            onBlur={(e) => {
-              const newValue = e.target.value;
-              if (newValue !== value) {
-                updateEntryMutation.mutate({ id: Number(row.original.id), priceComments: newValue });
-              }
-            }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                (e.target as HTMLInputElement).blur();
-              }
-            }}
-            onInput={(e) => {
-              // Dynamically adjust the height as user types
-              const target = e.target as HTMLTextAreaElement
-              target.style.height = "auto" // Reset height to shrink if needed
-              target.style.height = target.scrollHeight + "px" // Expand to fit content
-            }}
-          />
-        );
+        return <EditableTextarea value={value} rowId={Number(row.original.id)} field="priceComments" className="table-editable-textarea"/>;
       },
     },
       

@@ -53,7 +53,16 @@ select {
     @apply [&:nth-child(9)]:bg-[#7d3cfe61]  [&:nth-child(7)]:bg-[#f836ae4e] ;
   }
   .action-plan-cell-widths{
-    @apply [&:nth-child(3)]:max-w-24 [&:nth-child(7)]:max-w-20 [&:nth-child(9)]:max-w-20 [&:nth-child(2)]:max-w-24;
+    @apply  first:max-w-5
+            [&:nth-child(2)]:max-w-20
+            [&:nth-child(3)]:max-w-24
+            [&:nth-child(4)]:max-w-16 
+            [&:nth-child(5)]:max-w-40
+            [&:nth-child(6)]:max-w-28 
+            [&:nth-child(7)]:max-w-24
+            [&:nth-child(8)]:max-w-32  
+            [&:nth-child(9)]:max-w-24
+            [&:nth-child(10)]:max-w-32;
   }
 }
 

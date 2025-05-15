@@ -24,7 +24,7 @@ export type Confirmation = {
 };
 
 export type ActionPlan = {
-  id: string;
+  id: number;
   confirmationId: string;
   createdAt: string;
   updatedAt: string;
@@ -32,6 +32,7 @@ export type ActionPlan = {
 };
 
 export type ActionPlanEntry = {
+  actionPlan: number;
   id: string;
   status: string;
   date?: Date;
