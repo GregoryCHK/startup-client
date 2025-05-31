@@ -38,7 +38,7 @@ This project showcases my ability to architect and implement a modular, scalable
 - **Modular Architecture**: Split into `components/`, `providers/`, `lib/`, and feature-based directories.
 
 ---
-
+```
 ## 📁 Folder Overview
 startup-client/
 ├── app/ # App directory routing (Next.js 14)
