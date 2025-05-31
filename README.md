@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ✈️ Startup Client – Backoffice Tool for Tourism Agencies
 
-## Getting Started
+A full-stack web application built to streamline operations for Destination Management Companies (DMCs) and tourism operators. This backoffice client is part of a larger SaaS platform designed to manage customers, itineraries, confirmations, and financial tracking — all within a clean, modern interface.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🎯 Purpose
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This project showcases my ability to architect and implement a modular, scalable, and user-friendly platform using modern frontend technologies. It is part of a real-world system aimed at improving workflow efficiency for travel designers and operators.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠 Tech Stack
 
-## Learn More
+- **Framework**: [Next.js 14](https://nextjs.org/) (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS, PostCSS
+- **UI Components**: ShadCN/UI, Lucide Icons
+- **Authentication**: NextAuth.js (planned/partial)
+- **Forms & Validation**: React Hook Form, Zod
+- **Data Fetching**: React Query (TanStack)
+- **Internationalization**: i18next (multi-language support)
+- **State Management**: React Context API
+- **Calendar**: FullCalendar (for itinerary visualization)
+- **Routing**: App Directory structure
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 💡 Key Features (Implemented or Planned)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Customer CRM**: Add, view, and manage client records.
+- **Action Plans** *(planned)*: Create and edit travel action plans with drag-and-drop support.
+- **Confirmation Page**: Display all booked services with dynamic filtering.
+- **Reusable Components**: Custom modals, filters, table views, and forms.
+- **Docs Folder**: Upload and manage client-related documents (passports, allergies, preferences).
+- **Permissions & Auth** *(planned)*: Setup for role-based access with NextAuth.
+- **Mobile Responsive** *(planned)*: Clean UX across devices using Tailwind utility classes.
+- **Modular Architecture**: Split into `components/`, `providers/`, `lib/`, and feature-based directories.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📁 Folder Overview
+startup-client/
+├── app/ # App directory routing (Next.js 14)
+├── components/ # Reusable UI components (buttons, tables, modals)
+├── lib/ # Utility functions
+├── providers/ # React context providers (e.g., for theme, auth)
+├── public/ # Static assets
+├── types/ # TypeScript types and interfaces
+├── .env.local # Environment variables
+├── package.json # Project metadata and scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
