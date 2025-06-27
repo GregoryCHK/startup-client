@@ -1,4 +1,4 @@
-# ✈️ Startup Client – Backoffice Tool for Tourism Agencies
+# ✈️ Startup Client –- Backoffice Tool for Tourism Agencies
 
 A full-stack web application built to streamline operations for Destination Management Companies (DMCs) and tourism operators. This backoffice client is part of a larger SaaS platform designed to manage customers, itineraries, confirmations, and financial tracking — all within a clean, modern interface.
 
@@ -26,13 +26,31 @@ This project showcases my ability to architect and implement a modular, scalable
 
 ## 💡 Key Features (Implemented or Planned)
 
-- **Customer CRM**: Add, view, and manage client records.
-- **Action Plans** : Display all services with dynamic filtering.
-- **Reusable Components**: Custom modals, filters, table views, and forms.
-- **Docs Folder** *(planned)*: Upload and manage client-related documents (passports, allergies, preferences).
-- **Permissions & Auth** *(planned)*: Setup for role-based access with NextAuth.
-- **Mobile Responsive** *(planned)*: Clean UX across devices using Tailwind utility classes.
-- **Modular Architecture**: Split into `components/`, `providers/`, `lib/`, and feature-based directories.
+- ## ✅ Implemented
+- **Customer CRM**: Add, view, and manage client records
+- **Action Plans**: Display all services with dynamic filtering
+- **Reusable Components**: 
+  - Custom modals with RadixUI
+  - Sortable tables with TanStack Table
+  - Form builders with React Hook Form
+
+### 🔜 Planned
+- **Twilio Integration**:
+  - Booking confirmation emails/SMS
+  - Payment reminder notifications
+  - Real-time alerts for itinerary changes
+- **Document Management**:
+  - Secure file uploads (passports/visas)
+  - PDF viewer for contracts
+- **Permissions & Auth**:
+  - Role-based access (Admin/Agent/Client)
+  - Social login (Google/Apple)
+- **Mobile Optimization**:
+  - Responsive itineraries with date-pickers
+  - Touch-friendly action buttons
+- **Real-time Sync**:
+  - WebSocket updates for booking changes
+  - Offline mode with local cache
 
 ---
 ```
