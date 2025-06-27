@@ -14,7 +14,7 @@ This project showcases my ability to architect and implement a modular, scalable
 
 - **Framework**: [Next.js 14](https://nextjs.org/) (App Router)
 - **Language**: TypeScript
-- **Styling**: Tailwind CSS, PostCSS
+- **Styling**: Tailwind CSS
 - **UI Components**: ShadCN/UI, Lucide Icons
 - **Authentication**: NextAuth.js (planned)
 - **Forms & Validation**: React Hook Form
