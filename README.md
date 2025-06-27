@@ -16,12 +16,10 @@ This project showcases my ability to architect and implement a modular, scalable
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS, PostCSS
 - **UI Components**: ShadCN/UI, Lucide Icons
-- **Authentication**: NextAuth.js (planned/partial)
-- **Forms & Validation**: React Hook Form, Zod
+- **Authentication**: NextAuth.js (planned)
+- **Forms & Validation**: React Hook Form
 - **Data Fetching**: React Query (TanStack)
-- **Internationalization**: i18next (multi-language support)
-- **State Management**: React Context API
-- **Calendar**: FullCalendar (for itinerary visualization)
+- **Calendar**: FullCalendar (for itinerary visualization) (planned)
 - **Routing**: App Directory structure
 
 ---
@@ -29,10 +27,9 @@ This project showcases my ability to architect and implement a modular, scalable
 ## 💡 Key Features (Implemented or Planned)
 
 - **Customer CRM**: Add, view, and manage client records.
-- **Action Plans** *(planned)*: Create and edit travel action plans with drag-and-drop support.
-- **Confirmation Page**: Display all booked services with dynamic filtering.
+- **Action Plans** : Display all services with dynamic filtering.
 - **Reusable Components**: Custom modals, filters, table views, and forms.
-- **Docs Folder**: Upload and manage client-related documents (passports, allergies, preferences).
+- **Docs Folder** *(planned)*: Upload and manage client-related documents (passports, allergies, preferences).
 - **Permissions & Auth** *(planned)*: Setup for role-based access with NextAuth.
 - **Mobile Responsive** *(planned)*: Clean UX across devices using Tailwind utility classes.
 - **Modular Architecture**: Split into `components/`, `providers/`, `lib/`, and feature-based directories.
